@@ -8,7 +8,7 @@ app.use(cors());
 
 app.get('/',(req,res)=>{
 
-     res.json({mess:'Hola desde NodeJs'});
+     res.json({mess:'Hola desde el Backend con NodeJs'});
 
 });
 
