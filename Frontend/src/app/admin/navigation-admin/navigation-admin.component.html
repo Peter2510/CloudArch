@@ -5,9 +5,18 @@
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <button class="btn text-light m-md-2" (click)="mostrarOpcion(1)" >Inicio</button>
+      <hr class="w-25 mx-auto">
+      <h3 class="text-center"><b>Empleados</b></h3>
+      <button class="btn text-light m-md-2" (click)="mostrarOpcion(2)" >Ver</button><br>
+      <button class="btn text-light m-md-2" (click)="mostrarOpcion(3)">Crear</button>
+      <hr class="w-25 mx-auto">
+      <h3 class="text-center"><b>Compartido</b></h3>
+      <button class="btn text-light m-md-2" (click)="mostrarOpcion(4)" >Ver</button><br>
+      <hr class="w-25 mx-auto">
+      <h3 class="text-center"><b>Papelera</b></h3>
+      <button class="btn text-light m-md-2" (click)="mostrarOpcion(5)">Ver</button>
+      
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -21,8 +30,27 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>Frontend</span>
+      <button class="position-absolute top-2 mx-3 end-0 btn btn-outline-light" (click)="cerrarSesion()" >Cerrar sesion</button>
     </mat-toolbar>
-    <!-- Add Content Here -->
-    <app-dashboard-admin></app-dashboard-admin>
+     <!-- Carpetas-->
+     <div *ngIf="opcion==1">
+      <app-dashboard-admin></app-dashboard-admin>
+    </div>
+    <!--Ver Empleados-->
+    <div *ngIf="opcion==2">
+      <app-empleados></app-empleados>
+    </div>
+    <!--Crear Empleados-->
+    <div *ngIf="opcion==3">
+      <app-crear-empleado></app-crear-empleado>
+    </div>
+    <!--Compartido-->
+    <div *ngIf="opcion==4">
+      <app-compartido></app-compartido>
+    </div>
+    <!--Ver Papelera-->
+    <div *ngIf="opcion==5">
+      <app-recycler></app-recycler>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

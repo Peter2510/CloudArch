@@ -1,11 +1,10 @@
 const express = require('express');
-const Usuario = require('../models/Usuario');
-const LibrosController = require('../controllers/UsuariosController')
+const UsuariosController = require('../controllers/UsuariosController')
 
 const router = express.Router();
 
-router.get('/usuario', LibrosController.obtenerUsuario);
-router.post('/agregarUsuario', LibrosController.agregarUsuario);
-router.put('/cambioContrasenia', LibrosController.cambioContrasenia);
+router.post('/login', UsuariosController.obtenerUsuario);
+router.post('/agregarUsuario', UsuariosController.agregarUsuario);
+router.put('/cambioContrasenia', UsuariosController.cambioContrasenia);
 
 module.exports = router;

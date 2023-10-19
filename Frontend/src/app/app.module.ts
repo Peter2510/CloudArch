@@ -19,6 +19,13 @@ import { NavigationUserComponent } from './user/navigation-user/navigation-user.
 import { DashboardUserComponent } from './user/dashboard-user/dashboard-user.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@angular/cdk/layout';
+import { FileManagerComponent } from './file-manager/file-manager.component';
+import { RecyclerComponent } from './admin/recycler/recycler.component';
+import { EmpleadosComponent } from './admin/empleados/empleados.component';
+import { CrearEmpleadoComponent } from './admin/empleados/crear-empleado/crear-empleado.component';
+import { CompartidoComponent } from './compartido/compartido.component';
+import { PerfilComponent } from './user/perfil/perfil.component';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +34,13 @@ import { LayoutModule } from '@angular/cdk/layout';
     DashboardAdminComponent,
     NavigationAdminComponent,
     NavigationUserComponent,
-    DashboardUserComponent
+    DashboardUserComponent,
+    FileManagerComponent,
+    RecyclerComponent,
+    EmpleadosComponent,
+    CrearEmpleadoComponent,
+    CompartidoComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,

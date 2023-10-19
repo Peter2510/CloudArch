@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-const baseURL = "http://localhost:3000/";
+const baseURL = "http://localhost:3000/cloud-arch";
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +15,6 @@ export class LoginService {
 
   public loginStatusSubject = new Subject<boolean>;
 
-
-  public prueba(){
-
-    return this.http.get(`${baseURL}`);
-
-  }
 
   public verificarCredenciales(loginData: any){
 
@@ -62,7 +56,27 @@ export class LoginService {
   public getRol(){
     let userStorage = this.getUsuario();
     if(userStorage!=null){
-      return userStorage.codigo_rol;
+      return userStorage.rol;
+    }else{
+      this.logOut();
+      return null;
+    }
+  }
+
+  public getNombre(){
+    let userStorage = this.getUsuario();
+    if(userStorage!=null){
+      return userStorage.nombre;
+    }else{
+      this.logOut();
+      return null;
+    }
+  }
+
+  public getNombreUsuario(){
+    let userStorage = this.getUsuario();
+    if(userStorage!=null){
+      return userStorage.usuario;
     }else{
       this.logOut();
       return null;

@@ -1,0 +1,53 @@
+<div class="grid-container">
+
+    <h1 class="mat-h1 text-center">Administración</h1>
+  
+      <form class="form" (ngSubmit)="crearEmpleado()">
+          <h2 class="form__title"  >Agregar Empleado</h2>
+  
+          <div class="form__container">
+              
+            <div class="form__group">
+                  <input type="text" name="name" id="name" class="form__input" placeholder=" " [(ngModel)]="nombre" [ngModelOptions]="{standalone: true}">
+                  <label for="name" class="form__label">Nombre del empleado</label>
+                  <span class="form__line"></span>
+                  <div class="alert alert-warning mt-2" role="alert" *ngIf="nombreNull">
+                    Debes ingresar un nombre para el empleado
+                  </div>
+              </div>
+
+              <div class="form__group">
+                <input type="text" name="user" id="user" class="form__input" placeholder=" " [(ngModel)]="usuario" [ngModelOptions]="{standalone: true}">
+                <label for="user" class="form__label">Usuario del empleado</label>
+                <span class="form__line"></span>
+                <div class="alert alert-warning mt-2" role="alert" *ngIf="usuarioNull">
+                  Debes ingresar un usuario para el empleado
+                </div>
+            </div>
+              
+              <div class="form__group">
+                  <p class="text-start text-dark"> Rol</p>
+                  <select name="rol" id="rol" class="form__input" required (change)="cambiarTipoEmpleado($event)" required [(ngModel)]="rol">
+                    <option value="1" >Empleado</option>
+                    <option value="2" >Administrador</option>
+                  </select>
+                  <div class="alert alert-warning mt-2" role="alert" *ngIf="rolNull">
+                    Debes seleccionar un rol para el empleado
+                  </div>
+                </div>
+  
+              <div class="form__group">
+                  <input type="password" name="password" id="password" class="form__input" placeholder=" " required [(ngModel)]="contrasenia" [ngModelOptions]="{standalone: true}">
+                  <label for="password" class="form__label">Contraseña</label>
+                  <span class="form__line"></span>
+                  <div class="alert alert-warning mt-2" role="alert" *ngIf="constraseniaNull">
+                    Se debe ingresar una contrasena
+                  </div>
+              </div>
+  
+              <input type="submit" class="form__submit" name="login" value="Agregar">
+          </div>
+  
+      </form>
+  </div>
+  
