@@ -57,6 +57,7 @@ import { PerfilComponent } from './user/perfil/perfil.component';
     MatCardModule,
     MatMenuModule,
     FormsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

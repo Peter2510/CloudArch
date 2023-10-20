@@ -25,7 +25,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Frontend</span>
+      <span  class="fs-6 ms-4 fw-medium mt-2" *ngIf="loginService.estaLoggeado()">Usuario: {{loginService.getNombreUsuario()}}</span>
       <button class="position-absolute top-2 mx-3 end-0 btn btn-outline-light" (click)="cerrarSesion()" >Cerrar sesion</button>
     </mat-toolbar>
      <!-- Carpetas-->
