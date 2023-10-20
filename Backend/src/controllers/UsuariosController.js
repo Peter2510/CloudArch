@@ -6,9 +6,7 @@ const empleados = async (req, res) => {
     const empleados = await Usuario.find().exec();
 
     res.json(empleados);
-
 }
-
 
 const obtenerUsuario = async (req, res) => {
     
@@ -32,12 +30,9 @@ const obtenerUsuario = async (req, res) => {
             }
 
             res.json(usuario);
-            console.log(usuario)
 
-        }else{
-            
+        }else{           
             res.json('');
-
         }
     }else{
         res.json('');
@@ -69,10 +64,6 @@ const agregarUsuario = async (req, res) => {
         res.json({"agregado":"false"})
     }
     
-    
-    
-    
-    
 }
 
 const cambioContrasenia = async (req, res) => {
@@ -87,8 +78,6 @@ const cambioContrasenia = async (req, res) => {
     );
     res.json(actualizacion);
 }
-
-
 
 module.exports = {
     obtenerUsuario,
