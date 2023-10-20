@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject, catchError } from 'rxjs';
+import { Usuario } from 'src/app/Models/Usuario';
+import { of } from 'rxjs';
 
 const baseURL = "http://localhost:3000/cloud-arch";
 
@@ -16,11 +18,11 @@ export class LoginService {
   public loginStatusSubject = new Subject<boolean>;
 
 
-  public verificarCredenciales(loginData: any){
+public verificarCredenciales(loginData: any): Observable<Usuario> {
 
-    return this.http.post(`${baseURL}/login`,loginData);
-
-  }
+  return this.http.post<Usuario>(`${baseURL}/login`, loginData);
+    
+}
 
   public sesion(usuario:any){
     //Guarda el objeto retornado en el local storage

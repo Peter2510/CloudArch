@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { UsuariosService } from '../service/usuarios.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-empleado',
@@ -18,6 +21,8 @@ export class CrearEmpleadoComponent {
   rolNull = false;
   constraseniaNull = false;
 
+  constructor(private usuariosService:UsuariosService,private router:Router){ }
+
   cambiarTipoEmpleado(event: any) {
     this.tipoEmpleado = event.target.value;
   }
@@ -28,7 +33,43 @@ export class CrearEmpleadoComponent {
     this.validarCampos();
 
     if(this.nombreNull==false && this.usuarioNull==false && this.rolNull==false && this.constraseniaNull==false){
-        alert("Crear empleado")
+
+      let usuario = {
+        nombre: this.nombre,
+        usuario: this.usuario,
+        contrasenia:this.contrasenia,
+        rol: this.rol
+      };
+
+      this.usuariosService.crearEmpleado(usuario).subscribe((confirmacion)=>{
+      
+        if(confirmacion.agregado === "true"){
+
+          Swal.fire({
+            title: 'Usuario agregado',
+            icon: 'success',
+            confirmButtonText: 'Continuar',
+          }).then(()=>{
+            this.nombre = '';
+            this.usuario = '';
+            this.rol = 0;
+            this.contrasenia = '';
+            this.tipoEmpleado = 0;
+          });
+
+        }else{
+
+          Swal.fire({
+            title: 'El usuario ya existe ',
+            icon: 'warning',
+            confirmButtonText: 'Continuar',
+          });
+          
+        }
+
+      });
+
+      
     }
 
   }

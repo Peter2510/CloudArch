@@ -12,6 +12,7 @@ app.get('/',(req,res)=>{
 });
 
 app.use('/cloud-arch',UsuarioRoutes);
+app.use('/cloud-arch',UsuarioRoutes);
 
 
 module.exports = app;
