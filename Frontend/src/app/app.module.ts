@@ -27,6 +27,7 @@ import { CompartidoComponent } from './compartido/compartido.component';
 import { PerfilComponent } from './user/perfil/perfil.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -50,11 +50,8 @@ db.archivos.insertMany(
             directorio_padre: '/',
             propietario: 'pgordillo',
             fecha_creacion: fechaFormateada,
-            compartido: 'false',
             fecha_compartido: '',
             hora_compartido: '',
-            eliminado: 'false',
-            usuarios_compartidos:[]
         },
         {
             nombre: 'app',
@@ -90,11 +87,9 @@ db.archivos.insertMany(
             directorio_padre: '/',
             propietario: 'pgordillo',
             fecha_creacion: fechaFormateada,
-            compartido: 'false',
             fecha_compartido: '',
             hora_compartido: '',
-            eliminado: 'false',
-            usuarios_compartidos:[]
+
         },
         {
             nombre: 'mongodb',
@@ -103,44 +98,121 @@ db.archivos.insertMany(
             directorio_padre: '/',
             propietario: 'pgordillo',
             fecha_creacion: fechaFormateada,
-            compartido: 'false',
             fecha_compartido: '',
             hora_compartido: '',
-            eliminado: 'false',
-            usuarios_compartidos: []
+        },
+        {
+            nombre: 'java',
+            extension: '.txt',
+            contenido: `Es un lenguaje de programacion`,
+            directorio_padre: '/',
+            propietario: 'rgonz',
+            fecha_creacion: fechaFormateada,
+            fecha_compartido: '',
+            hora_compartido: '',
+        },
+        {
+            nombre: 'prueba',
+            extension: '.html',
+            contenido: `<h1>Esto es un titulo</>`,
+            directorio_padre: '/',
+            propietario: 'rgonz',
+            fecha_creacion: fechaFormateada,
+            fecha_compartido: '',
+            hora_compartido: '',
+        },
+        {
+            nombre: 'txt dentro de documentos',
+            extension: '.txt',
+            contenido: `esto es el texto del documento`,
+            directorio_padre: '/documentos',
+            propietario: 'pgordillo',
+            fecha_creacion: fechaFormateada,
+            fecha_compartido: '',
+            hora_compartido: '',
+        },
+        {
+            nombre: 'html de app',
+            extension: '.html',
+            contenido: `<p>ESTO ES UN EJEMPLO DE UN PARRAFON EN HTML </p>`,
+            directorio_padre: '/app',
+            propietario: 'pgordillo',
+            fecha_creacion: fechaFormateada,
+            fecha_compartido: '',
+            hora_compartido: '',
+        },
+        {
+            nombre: 'notas musicales',
+            extension: '.txt',
+            contenido: `Las notas musicales pueden representarse como: C D M F G L A C`,
+            directorio_padre: '/musica',
+            propietario: 'pgordillo',
+            fecha_creacion: fechaFormateada,
+            fecha_compartido: '',
+            hora_compartido: '',
+        },
+        {
+            nombre: 'txt doc',
+            extension: '.txt',
+            contenido: `text de prueba en documento .txt`,
+            directorio_padre: '/documentos',
+            propietario: 'rgonz',
+            fecha_creacion: fechaFormateada,
+            fecha_compartido: '',
+            hora_compartido: '',
+        },
+        {
+            nombre: 'htmlPre',
+            extension: '.html',
+            contenido: `<h1>PRUEBA DEL HTML COMO TITULO</h1>`,
+            directorio_padre: '/descargas',
+            propietario: 'rgonz',
+            fecha_creacion: fechaFormateada,
+            fecha_compartido: '',
+            hora_compartido: '',
         }
+
     
     ]
 );
 
 
-
+//INSERTANDO DIRECTORIOS
 db.directorios.insertMany(
     [
         {
             nombre: 'app',
             directorio_padre: '/',
             propietario: 'pgordillo',
-            fecha_creacion: fechaFormateada,
-            eliminado: 'false',
+            fecha_creacion: fechaFormateada
 
         },
         {
             nombre: 'musica',
             directorio_padre: '/',
             propietario: 'pgordillo',
-            fecha_creacion: fechaFormateada,
-            eliminado: 'false',
+            fecha_creacion: fechaFormateada
         },
         {
             nombre: 'documentos',
             directorio_padre: '/',
             propietario: 'pgordillo',
-            fecha_creacion: fechaFormateada,
-            eliminado: 'false',
+            fecha_creacion: fechaFormateada
+        },
+        {
+            nombre: 'documentos',
+            directorio_padre: '/',
+            propietario: 'rgonz',
+            fecha_creacion: fechaFormateada
+        },
+        {
+            nombre: 'descargas',
+            directorio_padre: '/',
+            propietario: 'rgonz',
+            fecha_creacion: fechaFormateada
         }
     ]
-)
+);
 
 
 

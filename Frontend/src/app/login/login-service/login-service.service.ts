@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError } from 'rxjs';
 import { Usuario } from 'src/app/Models/Usuario';
-import { of } from 'rxjs';
 
 const baseURL = "http://localhost:3000/cloud-arch";
 

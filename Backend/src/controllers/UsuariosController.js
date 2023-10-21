@@ -8,7 +8,7 @@ const empleados = async (req, res) => {
     res.json(empleados);
 }
 
-const obtenerUsuario = async (req, res) => {
+const login = async (req, res) => {
     
     const { usuario, contrasenia } = req.body;
 
@@ -80,7 +80,7 @@ const cambioContrasenia = async (req, res) => {
 }
 
 module.exports = {
-    obtenerUsuario,
+    login,
     agregarUsuario,
     cambioContrasenia,
     empleados
