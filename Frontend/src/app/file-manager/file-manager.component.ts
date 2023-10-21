@@ -18,14 +18,15 @@ export class FileManagerComponent implements OnInit {
   directorios: Directorio[];
   archivos: Archivo[];
   usuario = this.loginService.getNombreUsuario();
+  detallesArchivo:Archivo;
+  visualizarArchivo = false;
 
   constructor(private cloudService: CloudService, private loginService: LoginService) { }
 
   ngOnInit(): void {
     this.path = this.root;
     this.obtenerDirectorios();
-    this.obtenerArchivos();
-
+    this.obtenerArchivos();  
   }
 
   private obtenerDirectorios() {
@@ -59,8 +60,16 @@ export class FileManagerComponent implements OnInit {
 
   }
 
-  public async verArchivo(nombre: String) {
-    let archivo = this.archivos.find(archivo => archivo.nombre === nombre && archivo.directorio_padre === this.path)
+
+  public async verArchivo(id: String) {
+      let archivo = this.archivos.find(archivo => archivo._id === id);
+
+      if(archivo){
+        this.visualizarArchivo = true;
+        this.detallesArchivo = archivo;
+      }
+
+  /*  let archivo = this.archivos.find(archivo => archivo._id === id);
 
     if (archivo) {
 
@@ -74,14 +83,11 @@ export class FileManagerComponent implements OnInit {
         },
         showCancelButton: true,
         confirmButtonText: 'Guardar',
-        cancelButtonText: "Salir",
+        cancelButtonText: "Salir"
+          
       }).then((result) => {
-
-
         if (result.isConfirmed) {
-
-          this.cloudService.editarContenido(archivo?._id, result.value).subscribe(data => {
-
+          this.cloudService.editarContenido(archivo?._id, result.value).subscribe((data) => {
             if (data.update) {
               Swal.fire({
                 title: 'Se editó correctamente el archivo',
@@ -99,25 +105,15 @@ export class FileManagerComponent implements OnInit {
               }
               );
             }
-
-
           });
-
-
-
         }
-
-
-
       });
-
-    }
-
-
+    }*/
   }
 
+  public regresarFileManager(){
+    this.visualizarArchivo = false;
+  }
 
-
-
-
+  
 }

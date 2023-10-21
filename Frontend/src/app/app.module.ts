@@ -26,6 +26,7 @@ import { CrearEmpleadoComponent } from './admin/empleados/crear-empleado/crear-e
 import { CompartidoComponent } from './compartido/compartido.component';
 import { PerfilComponent } from './user/perfil/perfil.component';
 import { CodeEditorComponent } from './file-manager/code-editor/code-editor.component';
+import { CodeEditorModule } from '@ngstack/code-editor';
 
 
 
@@ -61,7 +62,7 @@ import { CodeEditorComponent } from './file-manager/code-editor/code-editor.comp
     MatCardModule,
     MatMenuModule,
     FormsModule,
-
+    CodeEditorModule.forRoot()
 
   ],
   providers: [],

@@ -7,7 +7,7 @@ const directorioSchema = new Schema({
     nombre:String,
     directorio_padre:String,
     propietario:String,
-    fecha_creacion:Date
+    fecha_creacion:String
 
 }, {
     versionKey:false

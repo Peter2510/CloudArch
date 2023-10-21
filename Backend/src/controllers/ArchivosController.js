@@ -10,7 +10,7 @@ const listarArchivos = async (req, res) => {
         directorio_padre:directorio
 
     }).exec();
-
+  
     res.json(archivos);
 
 }
@@ -18,8 +18,6 @@ const listarArchivos = async (req, res) => {
 const editarContenido = async(req,res)=>{
 
     const { _id, contenido } = req.body;
-
-    console.log(req.body);
 
     const edicion = await Archivos.updateOne({
         _id:Object(_id)

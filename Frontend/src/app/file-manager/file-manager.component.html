@@ -1,58 +1,60 @@
 <div class="container">
-    
-    
-    <div class="alert alert-dark mt-4 mb-4 fs-5" role="alert">
-        <img src="assets/img/back.png" class="me-3" (click)="salirCarpeta()">
-        {{path}}
-    </div>
 
-    <div class="mt-3">
-        <button type="button" class="btn btn-success">Nuevo directorio</button>
-        <button type="button" class="btn btn-success ms-4">Nuevo archivo</button>
-    </div>
+    <img src="assets/img/back1.png" class="mb-2" *ngIf="visualizarArchivo" (click)="regresarFileManager()">
 
-    <div class="row mt-4">
+    <div *ngIf="!visualizarArchivo">
 
-        <!--CARPETAS-->
+        <div class="alert alert-dark mt-4 mb-4 fs-5" role="alert">
+            <img src="assets/img/back.png" class="me-3" (click)="salirCarpeta()">
+            {{path}}
+        </div>
 
-        <div class="col-md-2 mt-3"  *ngFor="let directorio of directorios">
-      
-            <div class="card" style="width: 8rem; background: transparent; border: none;" (click)="entrarCarpeta(directorio.nombre)" >
-                <img src="assets/img/folder.png" class="card-img-top">
-                <div class="card-body">
-                    <p class="card-text text-center text-light">{{directorio.nombre}}</p>
+        <div class="mt-3">
+            <button type="button" class="btn btn-success">Nuevo directorio</button>
+            <button type="button" class="btn btn-success ms-4">Nuevo archivo</button>
+        </div>
+
+        <div class="row mt-4">
+
+            <!--CARPETAS-->
+
+            <div class="col-md-2 mt-3" *ngFor="let directorio of directorios">
+
+                <div class="card" style="width: 8rem; background: transparent; border: none;"
+                    (click)="entrarCarpeta(directorio.nombre)">
+                    <img src="assets/img/folder.png" class="card-img-top">
+                    <div class="card-body">
+                        <p class="card-text text-center text-light">{{directorio.nombre}}</p>
+                    </div>
                 </div>
+
             </div>
+
+            <!--ARCHIVOS-->
+            <div class="col-md-2 mt-3" *ngFor="let archivo of archivos">
+
+                <div class="card" style="width: 8rem; background: transparent; border: none;"
+                    (click)="verArchivo(archivo._id)">
+                    <img *ngIf="archivo.extension=='.html'" src="assets/img/html.png" class="card-img-top">
+                    <img *ngIf="archivo.extension=='.txt'" src="assets/img/txt-file.png" class="card-img-top">
+                    <div class="card-body">
+                        <p class="card-text text-center text-light">{{archivo.nombre}}{{archivo.extension}}</p>
+                    </div>
+                </div>
+
+            </div>
+
 
         </div>
 
-        <!--ARCHIVOS-->
-        <div class="col-md-2 mt-3"  *ngFor="let archivo of archivos">
-      
-            <div class="card" style="width: 8rem; background: transparent; border: none;" (click)="verArchivo(archivo.nombre)" >
-                <img *ngIf="archivo.extension=='.html'" src="assets/img/html.png" class="card-img-top">
-                <img *ngIf="archivo.extension=='.txt'" src="assets/img/txt-file.png" class="card-img-top">
-                <div class="card-body">
-                    <p class="card-text text-center text-light">{{archivo.nombre}}{{archivo.extension}}</p>
-                </div>
-            </div>
-
-        </div>
-        
-        
-
-        
-
     </div>
+
+    <div  *ngIf="visualizarArchivo">
+        <app-code-editor [archivo]="detallesArchivo" ></app-code-editor>
+        
+    </div>
+   
 
 </div>
 
 
-
-
-
-
-
-<!--
-    <img src="assets/img/html.png" class="card-img-top" alt="...">
--->
