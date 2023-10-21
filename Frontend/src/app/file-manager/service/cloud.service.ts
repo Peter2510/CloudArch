@@ -4,31 +4,45 @@ import { Observable } from 'rxjs';
 import { Archivo } from 'src/app/Models/Archivo';
 import { Directorio } from 'src/app/Models/Directorio';
 
-const baseURL = "http://localhost:3000/cloud-arch";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CloudService {
 
+  private baseURL = "http://localhost:3000/cloud-arch";
+
   constructor(private http:HttpClient) { }
 
-  public directorios(usuario: any,directorio:any): Observable<Directorio[]> {
+  public directorios(usuario: any,directorio_padre:any): Observable<Directorio[]> {
 
     const params = new HttpParams().set('usuario', usuario).
-    set('directorio',directorio);
+    set('directorio_padre',directorio_padre);
 
-    return this.http.get<Directorio[]>(`${baseURL}/directorios`, {params} );
+    return this.http.get<Directorio[]>(`${this.baseURL}/directorios`, {params} );
       
   }
 
   public archivos(usuario: any,directorio:any): Observable<Archivo[]> {
 
     const params = new HttpParams().set('usuario', usuario).
-    set('directorio',directorio);
+    set('directorio_padre',directorio);
 
-    return this.http.get<Archivo[]>(`${baseURL}/archivos`, {params} );
-      
+    return this.http.get<Archivo[]>(`${this.baseURL}/archivos`, {params} );
+   
   }
+
+  public editarContenido(id:any,contenido:any):Observable<any>{
+
+    const request = {
+      _id: id,
+      contenido:contenido,
+    }
+
+     return this.http.post(`${this.baseURL}/editar-contenido`, request);
+
+  }
+  
   
 }

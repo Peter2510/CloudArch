@@ -25,6 +25,8 @@ import { EmpleadosComponent } from './admin/empleados/empleados.component';
 import { CrearEmpleadoComponent } from './admin/empleados/crear-empleado/crear-empleado.component';
 import { CompartidoComponent } from './compartido/compartido.component';
 import { PerfilComponent } from './user/perfil/perfil.component';
+import { CodeEditorComponent } from './file-manager/code-editor/code-editor.component';
+
 
 
 
@@ -41,7 +43,8 @@ import { PerfilComponent } from './user/perfil/perfil.component';
     EmpleadosComponent,
     CrearEmpleadoComponent,
     CompartidoComponent,
-    PerfilComponent
+    PerfilComponent,
+    CodeEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,8 @@ import { PerfilComponent } from './user/perfil/perfil.component';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-    FormsModule
+    FormsModule,
+
 
   ],
   providers: [],

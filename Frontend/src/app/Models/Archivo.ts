@@ -1,5 +1,6 @@
 export class Archivo{
 
+_id:String;
 nombre:String;
 extension:String;
 contenido:String;
