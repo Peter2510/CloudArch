@@ -19,7 +19,7 @@ export class FileManagerComponent implements OnInit {
   archivos: Archivo[];
   usuario = this.loginService.getNombreUsuario();
   detallesArchivo:Archivo;
-  visualizarArchivo = false;
+  visualizarArchivo:boolean = false;
 
   constructor(private cloudService: CloudService, private loginService: LoginService) { }
 
@@ -113,6 +113,8 @@ export class FileManagerComponent implements OnInit {
 
   public regresarFileManager(){
     this.visualizarArchivo = false;
+    this.obtenerDirectorios();
+    this.obtenerArchivos();
   }
 
   

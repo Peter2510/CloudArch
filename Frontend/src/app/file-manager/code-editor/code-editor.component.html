@@ -5,14 +5,16 @@
 <h3 >Propietario: {{propietario}}</h3>
 <h3>Creacion: {{archivo.fecha_creacion}}</h3>
 
-<div class="input-group mb-3">
-  <input type="text" value={{archivo.nombre}} class="form-control" aria-label="Text input with dropdown button">
-  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{archivo.extension}}</button>
-  <ul class="dropdown-menu dropdown-menu-end">
-    <li (click)="cambiarExtension('.html')"><a class="dropdown-item" *ngIf="archivo.extension=='.txt'">.html</a></li>
-    <li (click)="cambiarExtension('.txt')"><a class="dropdown-item" *ngIf="archivo.extension=='.html'">.txt</a></li>
-  </ul>
+<div style="display: flex; align-items: center;" class="mb-5" >
+  <button type="button" class="btn btn-warning" (click)="cambiarNombre()">Editar nombre</button>
+  <button type="button" class="btn btn-warning ms-4" (click)="moverArchivo()">Mover</button>
+  <p class="ms-2 mt-2">Nuevo directorio del archivo: {{nuevoDirectorio}}</p>
 </div>
+
+
+
+<div>
+  <h1 class="text-center">{{archivo.nombre}}{{archivo.extension}}</h1>
 
 <div class="row">
   <div class="col-12 mt-4" style="height: 60vh">
@@ -25,26 +27,22 @@
     </ngs-code-editor>
   </div>
 </div>
+</div>
 
 
 
 <div class="form__group">
   <p class=" text-start mt-5" >Usuarios a compartir</p>
   
-  
-
 </div>
 
-<div>
-  <button type="button" class="btn btn-warning" (click)="moverArchivo()" >Mover</button>
-  <h3 class="mt-2">Nuevo directorio: {{nuevoDirectorio}} </h3>
-</div>
+
 
 
 <div class="row">
   <div class="d-flex justify-content-center mt-5">
-    <button class="btn btn-success">
-      Guardar
+    <button class="btn btn-success" (click)="editarContenido()" >
+      Guardar cambios
     </button>
   </div>
 </div>

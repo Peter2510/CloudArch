@@ -1,8 +1,11 @@
+const { db } = require("../models/Archivos")
+
 use cloud_arch
 
 db.createCollection('usuarios')
 db.createCollection('archivos')
 db.createCollection('directorios')
+db.createCollection('directorios_padre')
 
 //INSERTANDO USUARIOS
 db.usuarios.insertMany(
@@ -200,6 +203,24 @@ db.directorios.insertMany(
             fecha_creacion: fechaFormateada
         },
         {
+            nombre: 'descargas',
+            directorio_padre: '/documentos',
+            propietario: 'pgordillo',
+            fecha_creacion: fechaFormateada
+        },
+        {
+            nombre: 'angular',
+            directorio_padre: '/app',
+            propietario: 'pgordillo',
+            fecha_creacion: fechaFormateada
+        },
+        {
+            nombre: 'documentos',
+            directorio_padre: '/musica',
+            propietario: 'pgordillo',
+            fecha_creacion: fechaFormateada
+        },
+        {
             nombre: 'documentos',
             directorio_padre: '/',
             propietario: 'rgonz',
@@ -210,9 +231,48 @@ db.directorios.insertMany(
             directorio_padre: '/',
             propietario: 'rgonz',
             fecha_creacion: fechaFormateada
+        },
+        {
+            nombre: 'texto',
+            directorio_padre: '/documentos',
+            propietario: 'rgonz',
+            fecha_creacion: fechaFormateada
+        },
+        {
+            nombre: 'documentos',
+            directorio_padre: '/descargas',
+            propietario: 'rgonz',
+            fecha_creacion: fechaFormateada
         }
     ]
 );
+
+db.directorios_padre.insertMany([
+    {
+        path:'/app',
+        propietario:'pgordillo'
+    },
+    {
+        path:'/musica',
+        propietario:'pgordillo'
+    },
+    {
+        path:'/documentos',
+        propietario:'pgordillo'
+    },
+    {
+        path:'/app/angular',
+        propietario:'rgonz'
+    },
+    {
+        path:'/musica/documentos',
+        propietario:'rgonz'
+    },
+    {
+        path:'/documentos/descargas',
+        propietario:'rgonz'
+    }
+]);
 
 
 
