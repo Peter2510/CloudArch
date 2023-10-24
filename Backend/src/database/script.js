@@ -5,7 +5,7 @@ use cloud_arch
 db.createCollection('usuarios')
 db.createCollection('archivos')
 db.createCollection('directorios')
-db.createCollection('directorios_padre')
+db.createCollection('padres')
 
 //INSERTANDO USUARIOS
 db.usuarios.insertMany(
@@ -247,7 +247,7 @@ db.directorios.insertMany(
     ]
 );
 
-db.directorios_padre.insertMany([
+db.padres.insertMany([
     {
         path:'/app',
         propietario:'pgordillo'
@@ -262,14 +262,30 @@ db.directorios_padre.insertMany([
     },
     {
         path:'/app/angular',
-        propietario:'rgonz'
+        propietario:'pgordillo'
     },
     {
         path:'/musica/documentos',
-        propietario:'rgonz'
+        propietario:'pgordillo'
     },
     {
         path:'/documentos/descargas',
+        propietario:'pgordillo'
+    },
+    {
+        path:'/documentos',
+        propietario:'rgonz'
+    },
+    {
+        path:'/descargas',
+        propietario:'rgonz'
+    },
+    {
+        path:'/documentos/texto',
+        propietario:'rgonz'
+    },
+    {
+        path:'/descargas/documentos',
         propietario:'rgonz'
     }
 ]);

@@ -100,20 +100,59 @@ const moverArchivo = async(req,res)=>{
         }
     }
     ).exec();
-
+    
+        
     if(mover.matchedCount==1){
         res.json({update:true});
     }else{
         res.json({update:false});
-    }
+    }    
 
 }
 
+
+const eliminarArchivo = async(req,res)=>{
+
+    const { id } = req.body;
+
+    const eliminar = await Archivos.updateOne({
+        _id:Object(id)
+    },
+    {
+        $set:{
+            directorio_padre:"/papelera"
+        }
+    }
+    ).exec();
+    
+        
+    if(eliminar.matchedCount==1){
+        res.json({update:true});
+    }else{
+        res.json({update:false});
+    }    
+
+}
+
+const listarArchivosPapelera = async (req, res) => {
+
+    const directorio = req.query.directorio_padre;
+
+    const papelera = await Archivos.find({
+        directorio_padre:directorio
+
+    }).exec();
+  
+    res.json(papelera);
+
+}
 
 module.exports = {
     listarArchivos,
     editarContenido,
     obtenerArchivo,
     renombrarArchivo,
-    moverArchivo
+    moverArchivo,
+    eliminarArchivo,
+    listarArchivosPapelera
 }

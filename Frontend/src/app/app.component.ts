@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import Swal from 'sweetalert2';
+import { Component,HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +7,10 @@ import Swal from 'sweetalert2';
 })
 export class AppComponent {
   title = 'Frontend';
+
+  @HostListener('document:contextmenu', ['$event'])
+  onContextMenu(event: Event): void {
+    event.preventDefault();
+  }
+
 }

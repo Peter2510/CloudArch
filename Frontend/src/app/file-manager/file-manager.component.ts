@@ -20,6 +20,7 @@ export class FileManagerComponent implements OnInit {
   usuario = this.loginService.getNombreUsuario();
   detallesArchivo:Archivo;
   visualizarArchivo:boolean = false;
+  
 
   constructor(private cloudService: CloudService, private loginService: LoginService) { }
 
@@ -68,47 +69,6 @@ export class FileManagerComponent implements OnInit {
         this.visualizarArchivo = true;
         this.detallesArchivo = archivo;
       }
-
-  /*  let archivo = this.archivos.find(archivo => archivo._id === id);
-
-    if (archivo) {
-
-      Swal.fire({
-        input: 'textarea',
-        inputLabel: archivo.nombre + '' + archivo.extension + '',
-        inputPlaceholder: 'Ingresa el texto aqui',
-        inputValue: archivo.contenido + '',
-        inputAttributes: {
-          'aria-label': 'Ingresa el texto'
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Guardar',
-        cancelButtonText: "Salir"
-          
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.cloudService.editarContenido(archivo?._id, result.value).subscribe((data) => {
-            if (data.update) {
-              Swal.fire({
-                title: 'Se editó correctamente el archivo',
-                icon: 'success'
-              }
-              ).then(()=>{
-                this.obtenerDirectorios();
-                this.obtenerArchivos();
-              }
-              );
-            } else {
-              Swal.fire({
-                title: 'No pudo actualizarse el archivo',
-                icon: 'error'
-              }
-              );
-            }
-          });
-        }
-      });
-    }*/
   }
 
   public regresarFileManager(){

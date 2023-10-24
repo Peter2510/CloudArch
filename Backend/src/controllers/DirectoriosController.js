@@ -16,7 +16,6 @@ const listarDirectorios = async (req, res) => {
 }
 
 
-
 module.exports = {
     listarDirectorios
 }

@@ -31,6 +31,20 @@ export class CloudService {
    
   }
 
+  public directoriosPapelera(directorio_padre:any): Observable<Directorio[]> {
+    const params = new HttpParams().set('directorio_padre',directorio_padre);
+
+    return this.http.get<Directorio[]>(`${this.baseURL}/directorios-papelera`, {params} );
+      
+  }
+
+  public archivosPapelera(directorio_padre:any): Observable<Archivo[]> {
+    const params = new HttpParams().set('directorio_padre',directorio_padre);
+
+    return this.http.get<Archivo[]>(`${this.baseURL}/archivos-papelera`, {params} );
+   
+  }
+
   public editarContenido(id:any,contenido:any):Observable<any>{
     const request = {
       _id: id,
@@ -59,12 +73,29 @@ export class CloudService {
      return this.http.put<any>(`${this.baseURL}/renombrar-archivo`, request);
   }
 
+  public listarDirectorios(propietario:any):Observable<any>{
+
+    const params = new HttpParams().set('propietario',propietario);
+    
+    return this.http.get<any>(`${this.baseURL}/directorios-usuario`, {params} );
+     
+  }
+
   public moverArchivo(id:any,directorio_padre:any):Observable<any>{
     const request = {
-      _id: id,
-      directorio_padre:directorio_padre,
+      id: id,
+      directorio_padre:directorio_padre
     }
+      
      return this.http.put<any>(`${this.baseURL}/mover-archivo`, request);
+  }
+
+  public eliminarArchivo(id:any):Observable<any>{
+    const request = {
+      id: id
+    }
+      
+     return this.http.put<any>(`${this.baseURL}/eliminar-archivo`, request);
   }
 
 

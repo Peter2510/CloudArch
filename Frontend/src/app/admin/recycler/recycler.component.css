@@ -1,0 +1,10 @@
+.file{
+    width: 8rem; 
+    background: transparent; 
+    border: none;
+    cursor: pointer;
+}
+
+.cursor{
+    cursor: pointer;
+}
