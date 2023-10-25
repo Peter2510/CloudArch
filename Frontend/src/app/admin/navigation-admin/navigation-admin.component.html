@@ -11,11 +11,14 @@
       <button class="btn text-light m-md-2" (click)="mostrarOpcion(2)" >Ver</button><br>
       <button class="btn text-light m-md-2" (click)="mostrarOpcion(3)">Crear</button>
       <hr class="w-25 mx-auto">
+      <h3 class="text-center"><b>Perfil</b></h3>
+      <button class="btn text-light m-md-2" (click)="mostrarOpcion(4)" >Ver</button>      
+      <hr class="w-25 mx-auto">
       <h3 class="text-center"><b>Compartido</b></h3>
-      <button class="btn text-light m-md-2" (click)="mostrarOpcion(4)" >Ver</button><br>
+      <button class="btn text-light m-md-2" (click)="mostrarOpcion(5)" >Ver</button><br>
       <hr class="w-25 mx-auto">
       <h3 class="text-center"><b>Papelera</b></h3>
-      <button class="btn text-light m-md-2" (click)="mostrarOpcion(5)">Ver</button>
+      <button class="btn text-light m-md-2" (click)="mostrarOpcion(6)">Ver</button>
       
     </mat-nav-list>
   </mat-sidenav>
@@ -44,12 +47,16 @@
     <div *ngIf="opcion==3">
       <app-crear-empleado></app-crear-empleado>
     </div>
-    <!--Compartido-->
+    <!--Ver Perfil-->
     <div *ngIf="opcion==4">
+      <app-perfil></app-perfil>
+    </div>
+    <!--Compartido-->
+    <div *ngIf="opcion==5">
       <app-compartido></app-compartido>
     </div>
     <!--Ver Papelera-->
-    <div *ngIf="opcion==5">
+    <div *ngIf="opcion==6">
       <app-recycler></app-recycler>
     </div>
   </mat-sidenav-content>

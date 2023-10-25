@@ -1,1 +1,41 @@
-<p>perfil works!</p>
+<div class="grid-container">
+ 
+      <form class="form" (ngSubmit)="actualizarEmpleado()">
+          <h2 class="form__title"  >Mi perfil</h2>
+  
+          <div class="form__container">
+              
+            <div class="form__group">
+                  <input readonly type="text" class="form__input"  value={{nombre}}>
+                  <label for="name" class="form__label">Nombre del empleado</label>
+                  <span class="form__line"></span>
+              </div>
+
+              <div class="form__group">
+                <input readonly type="text" class="form__input" value={{usuario}}>
+                <label for="user" class="form__label">Usuario del empleado</label>
+                <span class="form__line"></span>
+            </div>
+              
+            <div class="form__group">
+                <input readonly *ngIf="tipoEmpleado==1" type="text"  class="form__input" value="Colaborador">
+                <input readonly *ngIf="tipoEmpleado==2" type="text"  class="form__input" value="Administrador">
+                <label for="user" class="form__label">Usuario del empleado</label>
+                <span class="form__line"></span>
+            </div>
+  
+              <div class="form__group">
+                  <input type="password" name="password" id="password" class="form__input" placeholder=" " required [(ngModel)]="contrasenia" [ngModelOptions]="{standalone: true}">
+                  <label for="password" class="form__label">Contraseña</label>
+                  <span class="form__line"></span>
+                  <div class="alert alert-warning mt-2" role="alert" *ngIf="constraseniaNull">
+                    Se debe ingresar una contraseña
+                  </div>
+              </div>
+  
+              <input type="submit" class="form__submit" name="login" value="Actualizar">
+          </div>
+  
+      </form>
+  </div>
+  

@@ -19,7 +19,12 @@ export class UsuariosService {
 
     //Crear empleados
     crearEmpleado(usuario:any):Observable<any>{
-      return this.httpClient.post<any>(`${this.baseURL}/agregarUsuario`,usuario);
+      return this.httpClient.post<any>(`${this.baseURL}/agregar-usuario`,usuario);
+    }
+
+    //Crear empleados
+    cambiarContraseniaEmpleado(usuario:any):Observable<any>{
+      return this.httpClient.put<any>(`${this.baseURL}/actualizar-contrasenia`,usuario);
     }
 
 }

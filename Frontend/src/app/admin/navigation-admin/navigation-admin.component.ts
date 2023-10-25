@@ -23,9 +23,7 @@ export class NavigationAdminComponent {
     opcion:Number=1;
 
     public mostrarOpcion(opcionMostar:Number){
-
       this.opcion = opcionMostar;
-  
     }
 
     public cerrarSesion(){

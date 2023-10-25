@@ -84,4 +84,14 @@ public verificarCredenciales(loginData: any): Observable<Usuario> {
     }
   }
 
+  public getId(){
+    let userStorage = this.getUsuario();
+    if(userStorage!=null){
+      return userStorage._id;
+    }else{
+      this.logOut();
+      return null;
+    }
+  }
+
 }

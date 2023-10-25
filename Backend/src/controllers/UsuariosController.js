@@ -67,16 +67,22 @@ const agregarUsuario = async (req, res) => {
 }
 
 const cambioContrasenia = async (req, res) => {
-    const { usuario, contrasenia } = req.body;
+    const { _id, contrasenia } = req.body;
     const contraseniaEncriptada = await bcrypt.hash(contrasenia, 10);
 
     const actualizacion = await Usuario.updateOne(
 
-        {usuario:usuario},
+        {_id:_id},
         {$set:{contrasenia:contraseniaEncriptada}}
 
     );
-    res.json(actualizacion);
+    
+    if(actualizacion.matchedCount==1){
+        res.json({update:true});
+    }else{
+        res.json({update:false});
+    } 
+    
 }
 
 module.exports = {
