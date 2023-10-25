@@ -1,0 +1,43 @@
+<div class="grid-container">
+ 
+    <form class="form">
+        <h2 class="form__title">Directorio</h2>
+
+        <div class="form__container">
+            
+          <div class="form__group">
+                <input readonly type="text" class="form__input"  value={{directorio.nombre}}>
+                <label for="name" class="form__label">Nombre del directorio</label>
+                <span class="form__line"></span>
+            </div>
+
+            <div class="form__group">
+              <input readonly type="text" class="form__input" value={{directorio.propietario}}>
+              <label for="user" class="form__label">Propietario</label>
+              <span class="form__line"></span>
+          </div>
+
+          <div class="form__group">
+            <input readonly type="text" class="form__input" value={{directorio.directorio_padre}}>
+            <label for="user" class="form__label">Ruta actual</label>
+            <span class="form__line"></span>
+        </div>
+            
+        <div class="form__group">
+            <input readonly type="text" class="form__input" value={{directorio.fecha_creacion}}>
+            <label for="user" class="form__label">Fecha de creacion</label>
+            <span class="form__line"></span>
+        </div>
+
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <button type="button" class="btn btn-danger">Eliminar</button>
+            <button type="button" class="btn btn-warning">Mover</button>
+            
+          </div>
+
+          <button type="button" class="btn btn-success">Compartir</button>
+
+        </div>
+
+    </form>
+</div>

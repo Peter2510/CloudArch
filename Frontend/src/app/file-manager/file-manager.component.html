@@ -1,9 +1,9 @@
 <div class="container">
 
-    <img src="assets/img/back1.png" class="mb-2" *ngIf="visualizarArchivo || agregarArchivo "
+    <img src="assets/img/back1.png" class="mb-2" *ngIf="visualizarArchivo || agregarArchivo || informacionCarpeta "
         (click)="regresarFileManager()">
 
-    <div *ngIf="!visualizarArchivo && !agregarArchivo">
+    <div *ngIf="!visualizarArchivo && !agregarArchivo && !informacionCarpeta ">
 
         <div class="alert alert-dark mt-4 mb-4 fs-5" role="alert">
             <img src="assets/img/back.png" class="me-3 cursor" (click)="salirCarpeta()">
@@ -22,7 +22,7 @@
             <div class="col-md-2 mt-3" *ngFor="let directorio of directorios">
 
                 <div class="card file" (click)="entrarCarpeta(directorio.nombre)"
-                    (contextmenu)="eliminarCarpeta(directorio.nombre)">
+                    (contextmenu)="opcionesCarpeta(directorio.nombre)">
                     <img src="assets/img/folder.png" class="card-img-top">
                     <div class="card-body">
                         <p class="card-text text-center text-light">{{directorio.nombre}}</p>
@@ -49,16 +49,19 @@
 
     </div>
 
-    <div *ngIf="visualizarArchivo && !agregarArchivo ">
+    <!--Ver archivo-->
+    <div *ngIf="visualizarArchivo && !agregarArchivo &&!informacionCarpeta">
         <app-code-editor [archivo]="detallesArchivo"></app-code-editor>
-
     </div>
 
-    <div *ngIf="!visualizarArchivo && agregarArchivo ">
-        
+    <!--Crear archivo-->
+    <div *ngIf="!visualizarArchivo &&!informacionCarpeta && agregarArchivo ">
         <app-crear-archivo [archivo]="nuevoArchivo" ></app-crear-archivo>
-
     </div>
 
+    <!--Informacion carpeta-->
+    <div *ngIf="!visualizarArchivo &&informacionCarpeta && !agregarArchivo ">
+        <app-directorio ></app-directorio>
+    </div>    
 
 </div>

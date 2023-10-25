@@ -28,6 +28,7 @@ import { PerfilComponent } from './user/perfil/perfil.component';
 import { CodeEditorComponent } from './file-manager/code-editor/code-editor.component';
 import { CodeEditorModule } from '@ngstack/code-editor';
 import { CrearArchivoComponent } from './file-manager/crear-archivo/crear-archivo.component';
+import { DirectorioComponent } from './file-manager/directorio/directorio.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { CrearArchivoComponent } from './file-manager/crear-archivo/crear-archiv
     CompartidoComponent,
     PerfilComponent,
     CodeEditorComponent,
-    CrearArchivoComponent
+    CrearArchivoComponent,
+    DirectorioComponent
   ],
   imports: [
     BrowserModule,

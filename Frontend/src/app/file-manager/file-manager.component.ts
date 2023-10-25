@@ -22,7 +22,7 @@ export class FileManagerComponent implements OnInit {
   visualizarArchivo:boolean = false;
   agregarArchivo:boolean = false;
   nuevoArchivo:Archivo;
-  
+  informacionCarpeta:boolean = false;
 
   constructor(private cloudService: CloudService, private loginService: LoginService) { }
 
@@ -30,10 +30,6 @@ export class FileManagerComponent implements OnInit {
     this.path = this.root;
     this.obtenerDirectorios();
     this.obtenerArchivos();  
-  }
-
-  ngAfterViewInit() {
-    
   }
 
   private obtenerDirectorios() {
@@ -81,20 +77,17 @@ export class FileManagerComponent implements OnInit {
   public async regresarFileManager(){
     this.visualizarArchivo = false;
     this.agregarArchivo = false;
+    this.informacionCarpeta = false;
     this.obtenerDirectorios();
     this.obtenerArchivos();
   }
 
-  public eliminarCarpeta(directorio:any){
-    Swal.fire({
-      title:`¿Deseas eliminar el directorio ${directorio}?`,
-      icon:'question',
-      showConfirmButton:true,
-      confirmButtonText:'Eliminar',
-      confirmButtonColor:'#FF0000',
-      showCancelButton:true,
-      cancelButtonText:'Cancelar'
-    });
+  public opcionesCarpeta(directorio:any){
+
+    this.visualizarArchivo = false;
+    this.agregarArchivo = false;
+    this.informacionCarpeta = true;
+
   }
 
   public async crearArchivo(){
