@@ -147,6 +147,35 @@ const listarArchivosPapelera = async (req, res) => {
 
 }
 
+const crearArchivo = async (req, res) => {
+
+    const nombre = req.body.nombre;
+    const extension = req.body.extension;
+    const contenido = req.body.contenido;
+    const directorio_padre = req.body.directorio_padre;
+    const propietario = req.body.propietario;
+
+    const fechaActual = new Date();
+    const fechaFormateada = fechaActual.toLocaleDateString('es-ES');
+    
+    const nuevoArchivo = new Archivos({
+        nombre: nombre,
+        extension: extension,
+        contenido:contenido,
+        fecha_creacion:fechaFormateada,
+        directorio_padre: directorio_padre,
+        propietario: propietario
+      });
+      
+      try {
+        const resultado = await nuevoArchivo.save();
+        res.json({ insertado: true });
+      } catch (error) {
+        res.json({ insertado: false});
+      }
+  
+}
+
 module.exports = {
     listarArchivos,
     editarContenido,
@@ -154,5 +183,6 @@ module.exports = {
     renombrarArchivo,
     moverArchivo,
     eliminarArchivo,
-    listarArchivosPapelera
+    listarArchivosPapelera,
+    crearArchivo
 }

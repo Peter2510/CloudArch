@@ -1,43 +1,36 @@
-
 <div class="container">
 
-<h3>Directorio actual: {{archivo.directorio_padre}}</h3>
-<h3 >Propietario: {{archivo.propietario}}</h3>
-<h3>Creacion: {{archivo.fecha_creacion}}</h3>
+  <h3>Directorio actual: {{archivo.directorio_padre}}</h3>
+  <h3>Propietario: {{archivo.propietario}}</h3>
+  <h3>Creacion: {{archivo.fecha_creacion}}</h3>
 
-<div style="display: flex; align-items: center;" class="mb-5" *ngIf="!enPapelera" >
-  <img src="assets/img/delete1.png" class="me-3 cursor" (click)="eliminarArchivo()" >
-  <button type="button" class="btn btn-warning" (click)="renombrarArchivo()">Editar nombre</button>
-  <button type="button" class="btn btn-warning ms-4" (click)="moverArchivo()">Mover</button>
-  <p class="ms-2 mt-2">Nuevo directorio del archivo: {{nuevoDirectorio}}</p>
-</div>
-
-<div>
-  <h1 class="text-center">{{archivo.nombre}}{{archivo.extension}}</h1>
-
-<div class="row">
-  <div class="col-12 mt-4" style="height: 60vh">
-    <ngs-code-editor
-      [theme]="theme"
-      [codeModel]="codeModel"
-      [options]="options"
-      style="height: 100%"
-    >
-    </ngs-code-editor>
+  <div style="display: flex; align-items: center;" class="mb-5" *ngIf="!enPapelera">
+    <img src="assets/img/delete1.png" class="me-3 cursor" (click)="eliminarArchivo()">
+    <button type="button" class="btn btn-warning" (click)="renombrarArchivo()">Editar nombre</button>
+    <button type="button" class="btn btn-warning ms-4" (click)="moverArchivo()">Mover</button>
+    <p class="ms-2 mt-2">Nuevo directorio del archivo: {{nuevoDirectorio}}</p>
   </div>
-</div>
-</div>
 
-<div class="form__group" *ngIf="!enPapelera">
-  <p class=" text-start mt-5" >Usuarios a compartir</p>  
-</div>
-
-<div class="row">
-  <div class="d-flex justify-content-center mt-5">
-    <button class="btn btn-success" (click)="editarContenido()" >
-      Guardar cambios
-    </button>
+  <div>
+    <h1 class="text-center">{{archivo.nombre}}{{archivo.extension}}</h1>
+    <div class="row">
+      <div class="col-12 mt-4" style="height: 60vh">
+        <ngs-code-editor [theme]="theme" [codeModel]="codeModel" [options]="options" style="height: 100%">
+        </ngs-code-editor>
+      </div>
+    </div>
   </div>
-</div>
+
+  <div class="form__group" *ngIf="!enPapelera">
+    <p class=" text-start mt-5">Usuarios a compartir</p>
+  </div>
+
+  <div class="row">
+    <div class="d-flex justify-content-center mt-5">
+      <button class="btn btn-success" (click)="editarContenido()">
+        Guardar cambios
+      </button>
+    </div>
+  </div>
 
 </div>

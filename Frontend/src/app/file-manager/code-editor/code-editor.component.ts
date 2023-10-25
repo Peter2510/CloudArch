@@ -16,9 +16,9 @@ export class CodeEditorComponent implements OnInit {
 
   @Input() archivo: Archivo;
   esUsuario:boolean = true;
-  theme = 'vs-dark';
   propietario = this.loginService.getNombreUsuario();
   enPapelera:boolean;
+  theme = 'vs-dark';
   codeModel: CodeModel = {
     language: 'html',
     uri: 'main.txt',
@@ -143,9 +143,8 @@ export class CodeEditorComponent implements OnInit {
 
           //verificar si existe
           this.cloudService.archivo(data).subscribe((confirmacion) => {
-            console.log(confirmacion)
             if (!confirmacion.match) {
-              console.log(this.archivo._id, nombre.value, extension.value)
+              
               this.cloudService.renombrarArchivo(this.archivo._id, nombre.value, extension.value).subscribe((confirmacion) => {
 
                 if (confirmacion.update) {
@@ -205,11 +204,11 @@ export class CodeEditorComponent implements OnInit {
   public eliminarArchivo() {
     
     Swal.fire({
-      title: `Deseas eliminar el archivo ${this.archivo.nombre}${this.archivo.extension}`,
+      title: `¿Deseas eliminar el archivo ${this.archivo.nombre}${this.archivo.extension}?`,
       showConfirmButton:true,
       showCancelButton: true,
       confirmButtonText: 'Eliminar',
-      confirmButtonColor:'#FF0000',
+      confirmButtonColor:'#E22020',
       cancelButtonText: 'Cancelar',
       icon:'question'
     }).then((result) => {

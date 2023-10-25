@@ -98,8 +98,16 @@ export class CloudService {
      return this.http.put<any>(`${this.baseURL}/eliminar-archivo`, request);
   }
 
-
-
-  
+  public crearArchivo(archivo:any):Observable<any>{
+    const request = {
+      nombre: archivo.nombre,
+      extension: archivo.extension,
+      contenido: archivo.contenido,
+      directorio_padre: archivo.directorio_padre,
+      propietario: archivo.propietario
+    }
+      
+     return this.http.post<any>(`${this.baseURL}/crear-archivo`, request);
+  }
   
 }

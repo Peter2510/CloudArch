@@ -20,6 +20,8 @@ export class FileManagerComponent implements OnInit {
   usuario = this.loginService.getNombreUsuario();
   detallesArchivo:Archivo;
   visualizarArchivo:boolean = false;
+  agregarArchivo:boolean = false;
+  nuevoArchivo:Archivo;
   
 
   constructor(private cloudService: CloudService, private loginService: LoginService) { }
@@ -28,6 +30,10 @@ export class FileManagerComponent implements OnInit {
     this.path = this.root;
     this.obtenerDirectorios();
     this.obtenerArchivos();  
+  }
+
+  ngAfterViewInit() {
+    
   }
 
   private obtenerDirectorios() {
@@ -67,15 +73,64 @@ export class FileManagerComponent implements OnInit {
 
       if(archivo){
         this.visualizarArchivo = true;
+        this.agregarArchivo = false;
         this.detallesArchivo = archivo;
       }
   }
 
-  public regresarFileManager(){
+  public async regresarFileManager(){
     this.visualizarArchivo = false;
+    this.agregarArchivo = false;
     this.obtenerDirectorios();
     this.obtenerArchivos();
   }
 
+  public eliminarCarpeta(directorio:any){
+    Swal.fire({
+      title:`¿Deseas eliminar el directorio ${directorio}?`,
+      icon:'question',
+      showConfirmButton:true,
+      confirmButtonText:'Eliminar',
+      confirmButtonColor:'#FF0000',
+      showCancelButton:true,
+      cancelButtonText:'Cancelar'
+    });
+  }
+
+  public async crearArchivo(){
+
+      await Swal.fire({
+        title:`Crear nuevo archivo`,
+        input: 'select',
+        html:'<div class="form-outline">'+
+      '<p class="mb-3 text-sm-start">Nombre</p>'+
+      '<input type="text" id="nombre" class="form-control"/>'+
+      '</div>',
+        inputOptions: {
+          'Extension': {
+            texto: '.txt',
+            html: '.html',
+          }
+        },
+        inputPlaceholder: 'Selecciona una extension',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          return new Promise((resolve) => {
+            const nombre = document.getElementById('nombre') as HTMLInputElement;
+
+            if ((value === 'texto' || value==='html') && nombre.value.length>0 ) {
+              resolve()
+                  this.agregarArchivo = true;
+                  this.visualizarArchivo = false;
+                  value=='texto' ? value='.txt' : value='.html';
+                  this.nuevoArchivo = new Archivo(nombre.value, value, "", this.path, this.usuario);
+            } else {
+              resolve('Se debe asignar un nombre y una extension');
+            }
+          });
+        }
+      });
+
+  }
   
 }

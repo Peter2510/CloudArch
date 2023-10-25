@@ -27,6 +27,7 @@ import { CompartidoComponent } from './compartido/compartido.component';
 import { PerfilComponent } from './user/perfil/perfil.component';
 import { CodeEditorComponent } from './file-manager/code-editor/code-editor.component';
 import { CodeEditorModule } from '@ngstack/code-editor';
+import { CrearArchivoComponent } from './file-manager/crear-archivo/crear-archivo.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { CodeEditorModule } from '@ngstack/code-editor';
     CrearEmpleadoComponent,
     CompartidoComponent,
     PerfilComponent,
-    CodeEditorComponent
+    CodeEditorComponent,
+    CrearArchivoComponent
   ],
   imports: [
     BrowserModule,
