@@ -109,5 +109,26 @@ export class CloudService {
       
      return this.http.post<any>(`${this.baseURL}/crear-archivo`, request);
   }
+
+
+  public directorio(directorio:any): Observable<any> {
+
+    const params = new HttpParams().set('nombre', directorio.nombre).
+    set('directorio_padre',directorio.directorio_padre).
+    set('propietario',directorio.propietario);
+    
+    return this.http.get<any>(`${this.baseURL}/directorio`, {params} );
+      
+  }
+  
+  public crearDirectorio(directorio:any):Observable<any>{
+    const request = {
+      nombre: directorio.nombre,
+      directorio_padre: directorio.directorio_padre,
+      propietario: directorio.propietario
+    }
+      
+     return this.http.post<any>(`${this.baseURL}/crear-directorio`, request);
+  }
   
 }
