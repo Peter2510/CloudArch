@@ -120,7 +120,7 @@ const eliminarArchivo = async(req,res)=>{
     },
     {
         $set:{
-            directorio_padre:"/papelera"
+            directorio_padre:"papelera"
         }
     }
     ).exec();

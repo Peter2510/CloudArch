@@ -23,6 +23,7 @@ export class FileManagerComponent implements OnInit {
   agregarArchivo: boolean = false;
   nuevoArchivo: Archivo;
   informacionCarpeta: boolean = false;
+  id_directorio:String;
 
   constructor(private cloudService: CloudService, private loginService: LoginService) { }
 
@@ -82,8 +83,8 @@ export class FileManagerComponent implements OnInit {
     this.obtenerArchivos();
   }
 
-  public opcionesCarpeta(directorio: any) {
-
+  public opcionesCarpeta(id: any) {
+    this.id_directorio = id;
     this.visualizarArchivo = false;
     this.agregarArchivo = false;
     this.informacionCarpeta = true;
@@ -146,7 +147,7 @@ export class FileManagerComponent implements OnInit {
         return new Promise((resolve) => {
 
           if (value.length > 0) {
-            const esValido = value !== 'papelera' && value !== '/' && value !== 'compartido' ? true : false;
+            const esValido = value !== '/' ? true : false;
 
             if (esValido) {
 
@@ -167,7 +168,7 @@ export class FileManagerComponent implements OnInit {
                       this.obtenerArchivos();
                       this.obtenerDirectorios();
                     } else {
-                      Swal.fire('No pudo crearse el directorio')
+                      Swal.fire({ title: 'No pudo crearse el directorio', icon: 'error' })
                     }
 
                   });

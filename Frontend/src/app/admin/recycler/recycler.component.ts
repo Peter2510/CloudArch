@@ -10,14 +10,13 @@ import { CloudService } from 'src/app/file-manager/service/cloud.service';
 })
 export class RecyclerComponent {
   rutas: String[] = [];
-  root: String = "/papelera";
+  root: String = "papelera";
   path: String;
   directorios: Directorio[];
   archivos: Archivo[];
   detallesArchivo:Archivo;
   visualizarArchivo:boolean = false;
   
-
   constructor(private cloudService: CloudService) { }
 
   ngOnInit(): void {
@@ -33,6 +32,13 @@ export class RecyclerComponent {
     })
   }
 
+  private obtenerDirectoriosPapelera() {
+
+    this.cloudService.directoriosEnPapelera(this.path).subscribe(data => {
+      this.directorios = data;
+    })
+  }
+
   private obtenerArchivos() {
     this.cloudService.archivosPapelera(this.path).subscribe(data => {
       this.archivos = data;
@@ -41,8 +47,9 @@ export class RecyclerComponent {
 
   public entrarCarpeta(pathCarpeta: String) {
     this.rutas.push(pathCarpeta);
-    this.path = "/papelera" + this.rutas.join('/');
-    this.obtenerDirectorios();
+    this.path = "papelera/" + this.rutas.join('/');
+    console.log(this.path);
+    this.obtenerDirectoriosPapelera();
     this.obtenerArchivos();
   }
 
@@ -50,10 +57,18 @@ export class RecyclerComponent {
 
     this.rutas.pop();
 
-    this.path = "/papelera" + this.rutas.join('/');
+    if(this.rutas.length==0){
+      this.path = "papelera";
+    }else{
+      this.path = "papelera/" + this.rutas.join('/');  
+    }
+
+    console.log(this.path)
+
     this.obtenerDirectorios();
     this.obtenerArchivos();
-
+    
+    
   }
 
 

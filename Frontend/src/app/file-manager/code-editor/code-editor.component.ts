@@ -15,9 +15,9 @@ import Swal from 'sweetalert2';
 export class CodeEditorComponent implements OnInit {
 
   @Input() archivo: Archivo;
-  esUsuario:boolean = true;
+  esUsuario: boolean = true;
   propietario = this.loginService.getNombreUsuario();
-  enPapelera:boolean;
+  enPapelera: boolean;
   theme = 'vs-dark';
   codeModel: CodeModel = {
     language: 'html',
@@ -41,7 +41,7 @@ export class CodeEditorComponent implements OnInit {
     this.cloudService.listarDirectorios(this.propietario).subscribe((data) => {
       this.directorios = data.directorios;
     })
-    this.enPapelera = this.archivo.directorio_padre.startsWith('/papelera');
+    this.enPapelera = this.archivo.directorio_padre.startsWith('papelera');
   }
 
   constructor(private cloudService: CloudService, private loginService: LoginService) { }
@@ -82,7 +82,7 @@ export class CodeEditorComponent implements OnInit {
                   title: 'Se movio el archivo correctamente',
                   icon: 'success'
                 }).then(() => {
-                  this.archivo.directorio_padre = nuevoDirectorio;                 
+                  this.archivo.directorio_padre = nuevoDirectorio;
                 });
               } else {
                 Swal.fire({
@@ -92,16 +92,12 @@ export class CodeEditorComponent implements OnInit {
               }
 
             });
-
-
           } else {
             Swal.fire({
               title: 'Ya existe un archivo con el mismo nombre y extension en el directorio seleccionado',
               icon: 'error'
             });
           }
-
-
         });
       }
 
@@ -114,7 +110,7 @@ export class CodeEditorComponent implements OnInit {
     Swal.fire({
       title: 'Editar archivo',
       html:
-        '<input id="nombre" class="swal2-input" value="' + this.archivo.nombre + '" >'+ 
+        '<input id="nombre" class="swal2-input" value="' + this.archivo.nombre + '" >' +
         `<p class="mt-3">Extension actual:${this.archivo.extension}</p>` +
         '<select name="select" id="extension">' +
         `<option value= "${this.archivo.extension}" selected disabled>Misma extension</option>` +
@@ -144,7 +140,7 @@ export class CodeEditorComponent implements OnInit {
           //verificar si existe
           this.cloudService.archivo(data).subscribe((confirmacion) => {
             if (!confirmacion.match) {
-              
+
               this.cloudService.renombrarArchivo(this.archivo._id, nombre.value, extension.value).subscribe((confirmacion) => {
 
                 if (confirmacion.update) {
@@ -202,35 +198,35 @@ export class CodeEditorComponent implements OnInit {
   }
 
   public eliminarArchivo() {
-    
+
     Swal.fire({
       title: `¿Deseas eliminar el archivo ${this.archivo.nombre}${this.archivo.extension}?`,
-      showConfirmButton:true,
+      showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: 'Eliminar',
-      confirmButtonColor:'#E22020',
+      confirmButtonColor: '#E22020',
       cancelButtonText: 'Cancelar',
-      icon:'question'
+      icon: 'question'
     }).then((result) => {
-      
-    if (result.isConfirmed) {
-      /* eliminar archivo */
-      this.cloudService.eliminarArchivo(this.archivo._id).subscribe((confirmacion) => {
-        if (confirmacion.update) {
-          Swal.fire({
-            title: 'Se elimno correctamente el archivo',
-            icon: 'success'
-          }).then(()=>{
-            window.location.reload()
-          });
-        } else {
-          Swal.fire({
-            title: 'No pudo eliminarse el archivo',
-            icon: 'error'
+
+      if (result.isConfirmed) {
+        /* eliminar archivo */
+        this.cloudService.eliminarArchivo(this.archivo._id).subscribe((confirmacion) => {
+          if (confirmacion.update) {
+            Swal.fire({
+              title: 'Se elimino correctamente el archivo',
+              icon: 'success'
+            }).then(() => {
+              window.location.reload()
+            });
+          } else {
+            Swal.fire({
+              title: 'No pudo eliminarse el archivo',
+              icon: 'error'
+            }
+            );
           }
-          );
-        }
-      });
+        });
       }
     });
   }

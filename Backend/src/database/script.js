@@ -1,5 +1,3 @@
-const { db } = require("../models/Archivos")
-
 use cloud_arch
 
 db.createCollection('usuarios')

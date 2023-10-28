@@ -22,7 +22,7 @@
             <div class="col-md-2 mt-3" *ngFor="let directorio of directorios">
 
                 <div class="card file" (click)="entrarCarpeta(directorio.nombre)"
-                    (contextmenu)="opcionesCarpeta(directorio.nombre)">
+                    (contextmenu)="opcionesCarpeta(directorio._id)">
                     <img src="assets/img/folder.png" class="card-img-top">
                     <div class="card-body">
                         <p class="card-text text-center text-light">{{directorio.nombre}}</p>
@@ -61,7 +61,7 @@
 
     <!--Informacion carpeta-->
     <div *ngIf="!visualizarArchivo &&informacionCarpeta && !agregarArchivo ">
-        <app-directorio ></app-directorio>
+        <app-directorio [propietario]="usuario" [id_directorio]="id_directorio" ></app-directorio>
     </div>    
 
 </div>

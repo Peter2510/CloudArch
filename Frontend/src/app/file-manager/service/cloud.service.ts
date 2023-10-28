@@ -31,6 +31,22 @@ export class CloudService {
    
   }
 
+  public directoriosEnPapelera(directorio_padre:any): Observable<Directorio[]> {
+    const params = new HttpParams().set('directorio_padre', directorio_padre).
+    set('directorio_padre',directorio_padre);
+
+    return this.http.get<Directorio[]>(`${this.baseURL}/directorios-en-papelera`, {params} );
+      
+  }
+
+ /* public archivosEnPapelera(usuario: any,directorio:any): Observable<Archivo[]> {
+    const params = new HttpParams().set('usuario', usuario).
+    set('directorio_padre',directorio);
+
+    return this.http.get<Archivo[]>(`${this.baseURL}/archivos`, {params} );
+   
+  }*/
+
   public directoriosPapelera(directorio_padre:any): Observable<Directorio[]> {
     const params = new HttpParams().set('directorio_padre',directorio_padre);
 
@@ -129,6 +145,23 @@ export class CloudService {
     }
       
      return this.http.post<any>(`${this.baseURL}/crear-directorio`, request);
+  }
+
+  public detalleDirectorio(id:any): Observable<Directorio> {
+
+    const params = new HttpParams().set('_id', id);
+        
+    return this.http.get<Directorio>(`${this.baseURL}/detalles-directorio`, {params} );
+      
+  }
+
+  public eliminarDirectorio(id:any,propietario:any):Observable<any>{
+    const request = {
+      id: id,
+      propietario:propietario
+    }
+      
+     return this.http.put<any>(`${this.baseURL}/eliminar-directorio`, request);
   }
   
 }
