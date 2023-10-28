@@ -31,9 +31,9 @@ export class CloudService {
    
   }
 
-  public directoriosEnPapelera(directorio_padre:any): Observable<Directorio[]> {
+  public directoriosEnPapelera(directorio_padre:any,propietario:any): Observable<Directorio[]> {
     const params = new HttpParams().set('directorio_padre', directorio_padre).
-    set('directorio_padre',directorio_padre);
+    set('propietario',propietario);
 
     return this.http.get<Directorio[]>(`${this.baseURL}/directorios-en-papelera`, {params} );
       
@@ -54,8 +54,9 @@ export class CloudService {
       
   }
 
-  public archivosPapelera(directorio_padre:any): Observable<Archivo[]> {
-    const params = new HttpParams().set('directorio_padre',directorio_padre);
+  public archivosPapelera(directorio_padre:any,propietario:any): Observable<Archivo[]> {
+    const params = new HttpParams().set('directorio_padre',directorio_padre).
+    set('propietario',propietario);
 
     return this.http.get<Archivo[]>(`${this.baseURL}/archivos-papelera`, {params} );
    

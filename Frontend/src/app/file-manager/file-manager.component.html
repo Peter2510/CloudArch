@@ -34,7 +34,8 @@
             <!--ARCHIVOS-->
             <div class="col-md-2 mt-3" *ngFor="let archivo of archivos">
 
-                <div class="card file" (click)="verArchivo(archivo._id)">
+                <div class="card file" (click)="verArchivo(archivo._id)"
+                    (contextmenu)="informacionArchivo(archivo)">
                     <img *ngIf="archivo.extension=='.html'" src="assets/img/html.png" class="card-img-top">
                     <img *ngIf="archivo.extension=='.txt'" src="assets/img/txt-file.png" class="card-img-top">
                     <div class="card-body">

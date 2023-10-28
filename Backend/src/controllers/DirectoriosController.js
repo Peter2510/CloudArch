@@ -236,8 +236,10 @@ const listarDirectoriosPapelera = async (req, res) => {
 const listarDirectoriosEnPapelera = async (req, res) => {
 
     const directorio = req.query.directorio_padre;
+    const propietario = req.query.propietario;
     const directorioContenido = await Directorios.find({
-        directorio_padre: directorio
+        directorio_padre: directorio,
+        propietario:propietario
     }).exec();
 
     res.json(directorioContenido);

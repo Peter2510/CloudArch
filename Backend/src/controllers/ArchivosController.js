@@ -137,10 +137,11 @@ const eliminarArchivo = async(req,res)=>{
 const listarArchivosPapelera = async (req, res) => {
 
     const directorio = req.query.directorio_padre;
+    const propietario = req.query.propietario;
 
     const papelera = await Archivos.find({
-        directorio_padre:directorio
-
+        directorio_padre:directorio,
+        propietario:propietario
     }).exec();
   
     res.json(papelera);

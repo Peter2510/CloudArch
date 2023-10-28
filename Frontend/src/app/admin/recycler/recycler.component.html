@@ -16,7 +16,8 @@
             <div class="col-md-2 mt-3" *ngFor="let directorio of directorios">
 
                 <div class="card file"
-                    (click)="entrarCarpeta(directorio.nombre)">
+                    (click)="entrarCarpeta(directorio.nombre,directorio.propietario)"
+                    (contextmenu)="informacionCarpeta(directorio)">
                     <img src="assets/img/folder.png" class="card-img-top">
                     <div class="card-body">
                         <p class="card-text text-center text-light">{{directorio.nombre}}</p>
@@ -29,7 +30,8 @@
             <div class="col-md-2 mt-3" *ngFor="let archivo of archivos">
 
                 <div class="card file"
-                    (click)="verArchivo(archivo._id)">
+                    (click)="verArchivo(archivo._id)"
+                    (contextmenu)="informacionArchivo(archivo)">
                     <img *ngIf="archivo.extension=='.html'" src="assets/img/html.png" class="card-img-top">
                     <img *ngIf="archivo.extension=='.txt'" src="assets/img/txt-file.png" class="card-img-top">
                     <div class="card-body">

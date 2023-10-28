@@ -191,4 +191,20 @@ export class FileManagerComponent implements OnInit {
 
   }
 
+  public informacionArchivo(archivo:Archivo){
+    Swal.fire({
+      icon:'info',
+      iconHtml:'Detalles',
+      iconColor:'#2FB2A8',
+      html: `<div class='text-start fs-3'>`+
+      `<p><strong>Nombre:</strong> ${archivo.nombre}${archivo.extension}</p>`+
+      `<p><strong>Directorio:</strong> ${archivo.directorio_padre}</p>`+
+      `<p><strong>Propietario:</strong> ${archivo.propietario}</p>`+
+      `<p><strong>Creado:</strong> ${archivo.fecha_creacion}</p>`+
+      `</div>`,
+      confirmButtonText:'Aceptar'
+    });
+  
+  }
+
 }
