@@ -71,7 +71,7 @@ const crearDirectorio = async (req, res) => {
 
         res.json({ insertado: true });
     } catch (error) {
-        console.log(error)
+        
         res.json({ insertado: false });
     }
 
@@ -165,7 +165,7 @@ async function moverHijosAPapelera(path_directorio, propietario) {
         propietario: propietario
     });
 
-    console.log(archivos)
+    
 
     //si tenia hijos, renombrar path del archivo y carpetas, primero archivos
     if (hijos.length > 0) {
@@ -198,7 +198,7 @@ async function moverHijosAPapelera(path_directorio, propietario) {
                     $set: { directorio_padre: "papelera" + path_directorio }
                 }).exec();
             
-                console.log(Archivos.find({directorio_padre:path_directorio}));
+                
 
             let path_directorioAux = '';
             path_directorio = path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
@@ -209,7 +209,7 @@ async function moverHijosAPapelera(path_directorio, propietario) {
 
 
     }else{
-        console.log("no tiene hijos",path_directorio)
+        
     }
 
     
@@ -217,7 +217,7 @@ async function moverHijosAPapelera(path_directorio, propietario) {
 
 }
 
-const listarDirectoriosPapelera = async (req, res) => {
+const listarDirectoriosPapeleraInicio = async (req, res) => {
 
     const directorio = req.query.directorio_padre;
 
@@ -233,7 +233,7 @@ const listarDirectoriosPapelera = async (req, res) => {
 }
 
 //navegacion entre carpetas en la papelera
-const listarDirectoriosEnPapelera = async (req, res) => {
+const listarDirectoriossEspecificosPapelera = async (req, res) => {
 
     const directorio = req.query.directorio_padre;
     const propietario = req.query.propietario;
@@ -252,6 +252,6 @@ module.exports = {
     crearDirectorio,
     detallesDirectorio,
     eliminarDirectorio,
-    listarDirectoriosPapelera,
-    listarDirectoriosEnPapelera
+    listarDirectoriosPapeleraInicio,
+    listarDirectoriossEspecificosPapelera
 }

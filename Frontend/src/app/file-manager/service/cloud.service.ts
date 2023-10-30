@@ -31,34 +31,33 @@ export class CloudService {
    
   }
 
-  public directoriosEnPapelera(directorio_padre:any,propietario:any): Observable<Directorio[]> {
+  public directoriosEspecificosPapelera(directorio_padre:any,propietario:any): Observable<Directorio[]> {
     const params = new HttpParams().set('directorio_padre', directorio_padre).
     set('propietario',propietario);
-
-    return this.http.get<Directorio[]>(`${this.baseURL}/directorios-en-papelera`, {params} );
-      
-  }
-
- /* public archivosEnPapelera(usuario: any,directorio:any): Observable<Archivo[]> {
-    const params = new HttpParams().set('usuario', usuario).
-    set('directorio_padre',directorio);
-
-    return this.http.get<Archivo[]>(`${this.baseURL}/archivos`, {params} );
-   
-  }*/
-
-  public directoriosPapelera(directorio_padre:any): Observable<Directorio[]> {
-    const params = new HttpParams().set('directorio_padre',directorio_padre);
 
     return this.http.get<Directorio[]>(`${this.baseURL}/directorios-papelera`, {params} );
       
   }
 
-  public archivosPapelera(directorio_padre:any,propietario:any): Observable<Archivo[]> {
-    const params = new HttpParams().set('directorio_padre',directorio_padre).
+  public archivosEspecificosPapelera(directorio_padre:any,propietario:any): Observable<Archivo[]> {
+    const params = new HttpParams().set('directorio_padre', directorio_padre).
     set('propietario',propietario);
 
     return this.http.get<Archivo[]>(`${this.baseURL}/archivos-papelera`, {params} );
+      
+  }
+
+  public directoriosPapeleraInicio(directorio_padre:any): Observable<Directorio[]> {
+    const params = new HttpParams().set('directorio_padre',directorio_padre);
+
+    return this.http.get<Directorio[]>(`${this.baseURL}/directorios-papelera-inicio`, {params} );
+      
+  }
+
+  public archivosPapeleraInicio(directorio_padre:any): Observable<Archivo[]> {
+    const params = new HttpParams().set('directorio_padre',directorio_padre);
+
+    return this.http.get<Archivo[]>(`${this.baseURL}/archivos-papelera-inicio`, {params} );
    
   }
 

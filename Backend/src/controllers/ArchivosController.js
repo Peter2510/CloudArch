@@ -134,20 +134,6 @@ const eliminarArchivo = async(req,res)=>{
 
 }
 
-const listarArchivosPapelera = async (req, res) => {
-
-    const directorio = req.query.directorio_padre;
-    const propietario = req.query.propietario;
-
-    const papelera = await Archivos.find({
-        directorio_padre:directorio,
-        propietario:propietario
-    }).exec();
-  
-    res.json(papelera);
-
-}
-
 const crearArchivo = async (req, res) => {
 
     const nombre = req.body.nombre;
@@ -177,6 +163,32 @@ const crearArchivo = async (req, res) => {
   
 }
 
+const listarArchivosPapeleraInicio = async (req, res) => {
+
+    const directorio = req.query.directorio_padre;
+
+    const papelera = await Archivos.find({
+        directorio_padre:directorio,
+    }).exec();
+  
+    res.json(papelera);
+
+}
+
+const listarArchivosEspecificosPapelera = async (req, res) => {
+
+    const directorio = req.query.directorio_padre;
+    const propietario = req.query.propietario;
+
+    const papelera = await Archivos.find({
+        directorio_padre:directorio,
+        propietario:propietario
+    }).exec();
+  
+    res.json(papelera);
+
+}
+
 module.exports = {
     listarArchivos,
     editarContenido,
@@ -184,6 +196,7 @@ module.exports = {
     renombrarArchivo,
     moverArchivo,
     eliminarArchivo,
-    listarArchivosPapelera,
-    crearArchivo
+    crearArchivo,
+    listarArchivosPapeleraInicio,
+    listarArchivosEspecificosPapelera
 }

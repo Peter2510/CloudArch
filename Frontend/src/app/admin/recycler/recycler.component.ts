@@ -23,26 +23,33 @@ export class RecyclerComponent {
 
   ngOnInit(): void {
     this.path = this.root;
-    this.obtenerDirectorios();
-    this.obtenerArchivos();  
+    this.obtenerDirectoriosInicio();
+    this.obtenerArchivosInicio();  
   }
 
-  private obtenerDirectorios() {
+  private obtenerDirectoriosInicio() {
 
-    this.cloudService.directoriosPapelera(this.path).subscribe(data => {
+    this.cloudService.directoriosPapeleraInicio(this.path).subscribe(data => {
       this.directorios = data;
     })
   }
 
-  private obtenerDirectoriosPapelera() {
-
-    this.cloudService.directoriosEnPapelera(this.path,this.propietario).subscribe(data => {
+  private obtenerDirectoriosEspecificosPapelera() {
+    
+    this.cloudService.directoriosEspecificosPapelera(this.path,this.propietario).subscribe(data => {
       this.directorios = data;
     })
   }
 
-  private obtenerArchivos() {
-    this.cloudService.archivosPapelera(this.path,this.propietario).subscribe(data => {
+  private obtenerArchivosInicio() {
+    this.cloudService.archivosPapeleraInicio(this.path).subscribe(data => {
+      this.archivos = data;
+    });
+  }
+  
+  private obtenerArchivosEspecificosPapelera() {
+    
+    this.cloudService.archivosEspecificosPapelera(this.path,this.propietario).subscribe(data => {
       this.archivos = data;
     });
   }
@@ -51,9 +58,9 @@ export class RecyclerComponent {
     this.rutas.push(pathCarpeta);
     this.propietario = propietario;
     this.path = "papelera/" + this.rutas.join('/');
-    console.log(this.path);
-    this.obtenerDirectoriosPapelera();
-    this.obtenerArchivos();
+    
+    this.obtenerDirectoriosEspecificosPapelera();
+    this.obtenerArchivosEspecificosPapelera();
   }
 
   public salirCarpeta() {
@@ -62,15 +69,16 @@ export class RecyclerComponent {
 
     if(this.rutas.length==0){
       this.path = "papelera";
+      this.obtenerArchivosInicio();
+      this.obtenerDirectoriosInicio();
+
     }else{
+      
       this.path = "papelera/" + this.rutas.join('/');  
+      this.obtenerArchivosEspecificosPapelera()
+      this.obtenerDirectoriosEspecificosPapelera()
     }
 
-    console.log(this.path)
-
-    this.obtenerDirectorios();
-    this.obtenerArchivos();
-    
     
   }
 
@@ -86,8 +94,16 @@ export class RecyclerComponent {
 
   public regresarFileManager(){
     this.visualizarArchivo = false;
-    this.obtenerDirectorios();
-    this.obtenerArchivos();
+
+    if(this.propietario){
+      this.obtenerDirectoriosEspecificosPapelera();
+      this.obtenerArchivosEspecificosPapelera();
+    }else{
+      this.obtenerArchivosInicio()
+      this.obtenerDirectoriosInicio()
+    }
+
+    
   }
 
   public informacionCarpeta(directorio:Directorio){
