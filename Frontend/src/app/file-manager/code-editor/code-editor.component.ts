@@ -33,6 +33,7 @@ export class CodeEditorComponent implements OnInit {
   };
 
   usuarios: Usuario[];
+  usuariosSeleccionados: String[] = [];
   directorios: [];
   nuevoDirectorio = '';
 
@@ -42,9 +43,10 @@ export class CodeEditorComponent implements OnInit {
       this.directorios = data.directorios;
     })
     this.enPapelera = this.archivo.directorio_padre.startsWith('papelera');
+    this.mostarUsuarios()
   }
 
-  constructor(private cloudService: CloudService, private loginService: LoginService) { }
+  constructor(private cloudService: CloudService, private loginService: LoginService, private usuariosServicio: UsuariosService) { }
 
   public cambiarExtension(tipo: string) {
     this.archivo.extension = tipo;
@@ -234,38 +236,94 @@ export class CodeEditorComponent implements OnInit {
   public async copiarArchivo() {
 
     Swal.fire({
-      titleText:'¿Deseas hacer una copia de este archivo?',
-      icon:'question',
-      showConfirmButton:true,
-      confirmButtonText:'Aceptar',
-      showCancelButton:true,
-      cancelButtonText:'Cancelar'   
-    }).then(result=>{
+      titleText: '¿Deseas hacer una copia de este archivo?',
+      icon: 'question',
+      showConfirmButton: true,
+      confirmButtonText: 'Aceptar',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
 
-      if(result.isConfirmed){
-        this.cloudService.copiarArchivo(this.archivo._id).subscribe((confirmacion)=>{
+      if (result.isConfirmed) {
+        this.cloudService.copiarArchivo(this.archivo._id).subscribe((confirmacion) => {
 
-          if(confirmacion.insertado){
-  
+          if (confirmacion.insertado) {
+
             Swal.fire({
-              title:'Se guardo la copia del archivo',
-              icon:'success',
-              showConfirmButton:true,
-              confirmButtonText:'Aceptar'
+              title: 'Se guardo la copia del archivo',
+              icon: 'success',
+              showConfirmButton: true,
+              confirmButtonText: 'Aceptar'
             });
 
-          }else{
+          } else {
             Swal.fire({
-              title:'Error al guardar la copia del archivo',
-              icon:'error',
-              showConfirmButton:true,
-              confirmButtonText:'Aceptar'
+              title: 'Error al guardar la copia del archivo',
+              icon: 'error',
+              showConfirmButton: true,
+              confirmButtonText: 'Aceptar'
             });
           }
-  
+
         });
       }
     });
 
   }
+
+  private mostarUsuarios() {
+
+    this.usuariosServicio.obtenerListaUsuarios().subscribe((listaUsuarios) => {
+
+      this.usuarios = listaUsuarios.map(usuario => usuario);
+
+    });
+
+  }
+
+  public agregarUsuario() {
+
+    const usuario = document.getElementById('searchInput') as HTMLInputElement | null;
+
+    if (usuario) {
+
+      if (usuario.value.length > 0) {
+
+        if (this.usuarios.some(usuarioObj => usuarioObj.usuario === usuario.value)) {
+          
+          if(!this.usuariosSeleccionados.includes(usuario.value)){
+            this.usuariosSeleccionados.push(usuario.value);
+          }else{
+            Swal.fire({ title: 'El usuario ya esta en la lista', icon: 'error', confirmButtonText: 'Aceptar' });
+          }
+          
+        } else {
+          Swal.fire({ title: 'El usuario no existe', icon: 'error', confirmButtonText: 'Aceptar' });
+        }
+
+
+      }
+
+    }
+
+  }
+
+  public quitarUsuario(index:any){
+    this.usuariosSeleccionados.splice(index, 1);
+    console.log(this.usuariosSeleccionados.length)
+
+  }
+
+  public compartirArchivo(){
+    
+    if(this.usuariosSeleccionados.length>0){
+      console.log(this.usuariosSeleccionados)
+    }
+
+  }
+
+
+
+
+
 }
