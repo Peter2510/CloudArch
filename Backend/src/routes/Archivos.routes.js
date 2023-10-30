@@ -12,5 +12,6 @@ router.put('/eliminar-archivo', ArchivosController.eliminarArchivo);
 router.post('/crear-archivo',ArchivosController.crearArchivo);
 router.get('/archivos-papelera-inicio', ArchivosController.listarArchivosPapeleraInicio);
 router.get('/archivos-papelera', ArchivosController.listarArchivosEspecificosPapelera);
+router.post('/copiar-archivo',ArchivosController.copiarArchivo);
 
 module.exports = router;

@@ -231,4 +231,41 @@ export class CodeEditorComponent implements OnInit {
     });
   }
 
+  public async copiarArchivo() {
+
+    Swal.fire({
+      titleText:'¿Deseas hacer una copia de este archivo?',
+      icon:'question',
+      showConfirmButton:true,
+      confirmButtonText:'Aceptar',
+      showCancelButton:true,
+      cancelButtonText:'Cancelar'   
+    }).then(result=>{
+
+      if(result.isConfirmed){
+        this.cloudService.copiarArchivo(this.archivo._id).subscribe((confirmacion)=>{
+
+          if(confirmacion.insertado){
+  
+            Swal.fire({
+              title:'Se guardo la copia del archivo',
+              icon:'success',
+              showConfirmButton:true,
+              confirmButtonText:'Aceptar'
+            });
+
+          }else{
+            Swal.fire({
+              title:'Error al guardar la copia del archivo',
+              icon:'error',
+              showConfirmButton:true,
+              confirmButtonText:'Aceptar'
+            });
+          }
+  
+        });
+      }
+    });
+
+  }
 }

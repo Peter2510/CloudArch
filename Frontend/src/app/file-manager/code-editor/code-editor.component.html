@@ -6,7 +6,8 @@
 
   <div style="display: flex; align-items: center;" class="mb-5" *ngIf="!enPapelera">
     <img src="assets/img/delete1.png" class="me-3 cursor" (click)="eliminarArchivo()">
-    <button type="button" class="btn btn-warning" (click)="renombrarArchivo()">Editar nombre</button>
+    <button type="button" class="btn btn-warning" (click)="copiarArchivo()">Copiar</button>
+    <button type="button" class="btn btn-warning ms-4" (click)="renombrarArchivo()">Editar nombre</button>
     <button type="button" class="btn btn-warning ms-4" (click)="moverArchivo()">Mover</button>
     <p class="ms-2 mt-2">Nuevo directorio del archivo: {{nuevoDirectorio}}</p>
   </div>

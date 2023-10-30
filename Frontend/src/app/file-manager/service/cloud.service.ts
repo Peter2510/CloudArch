@@ -163,5 +163,13 @@ export class CloudService {
       
      return this.http.put<any>(`${this.baseURL}/eliminar-directorio`, request);
   }
+
+  public copiarArchivo(id:any):Observable<any>{
+    const request = {
+      id:id
+    }
+      
+     return this.http.post<any>(`${this.baseURL}/copiar-archivo`, request);
+  }
   
 }
