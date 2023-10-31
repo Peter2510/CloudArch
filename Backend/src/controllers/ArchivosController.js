@@ -218,6 +218,49 @@ const listarArchivosEspecificosPapelera = async (req, res) => {
 
 }
 
+const compartirArchivo = async (req, res) => {
+
+    const usuarios = req.body.usuarios;
+    const id_archivo = req.body.id;
+
+    const archivo = await Archivos.findOne({
+        _id: id_archivo
+    }).exec();
+
+    const fechaActual = new Date();
+    const fechaFormateada = fechaActual.toLocaleDateString('es-ES');
+    const horaFormateada = fechaActual.toLocaleTimeString('it-IT',{ timeZone: 'America/Guatemala' });
+
+    if (archivo) {
+        try {
+            const usuariosPromises = usuarios.map(async (usuario) => {
+                const nuevoArchivo = new Archivos({
+                    nombre: archivo.nombre,
+                    extension: archivo.extension,
+                    contenido: archivo.contenido,
+                    fecha_creacion: archivo.fecha_creacion,
+                    directorio_padre: 'compartido',
+                    propietario: usuario,
+                    fecha_compartido:fechaFormateada,
+                    hora_compartido:horaFormateada
+                });
+
+                return nuevoArchivo.save();
+            });
+
+            await Promise.all(usuariosPromises);
+
+            res.json({ share: true });
+        } catch (error) {
+            res.json({ error: true });
+        }
+    } else {
+        res.json({ share: false });
+    }
+
+
+}
+
 module.exports = {
     listarArchivos,
     editarContenido,
@@ -228,5 +271,6 @@ module.exports = {
     crearArchivo,
     listarArchivosPapeleraInicio,
     listarArchivosEspecificosPapelera,
-    copiarArchivo
+    copiarArchivo,
+    compartirArchivo
 }

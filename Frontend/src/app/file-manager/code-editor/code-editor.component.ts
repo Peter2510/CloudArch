@@ -316,14 +316,31 @@ export class CodeEditorComponent implements OnInit {
 
   public compartirArchivo(){
     
+
     if(this.usuariosSeleccionados.length>0){
-      console.log(this.usuariosSeleccionados)
+      
+      this.cloudService.compartirArchivo(this.archivo._id,this.usuariosSeleccionados).subscribe((confirmacion)=>{
+        
+        //validar que se envio en el servidor
+        if ('share' in confirmacion) {
+          
+          if(confirmacion.share){
+              Swal.fire({title:"Archivo compartido",icon:'success'});
+          }else{
+            Swal.fire({title:"Archivo no encontrado",icon:'error'});
+          }
+          
+
+        }else if('error' in confirmacion){
+
+          Swal.fire({title:"Error al compartir el archivo",icon:'error'});
+          
+        }
+        
+      });
+
     }
 
   }
-
-
-
-
 
 }
