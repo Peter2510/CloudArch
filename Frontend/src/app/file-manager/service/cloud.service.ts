@@ -181,5 +181,15 @@ export class CloudService {
      return this.http.post<any>(`${this.baseURL}/compartir-archivo`, request);
   }
 
+  public copiarDirectorio(id:any):Observable<any>{
+    const request = {
+      id:id
+    }
+      
+     return this.http.post<any>(`${this.baseURL}/copiar-directorio`, request);
+
+  }
+
+  
   
 }

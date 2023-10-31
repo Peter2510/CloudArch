@@ -14,5 +14,7 @@ router.get('/archivos-papelera-inicio', ArchivosController.listarArchivosPapeler
 router.get('/archivos-papelera', ArchivosController.listarArchivosEspecificosPapelera);
 router.post('/copiar-archivo',ArchivosController.copiarArchivo);
 router.post('/compartir-archivo',ArchivosController.compartirArchivo);
+router.get('/archivos-compartido-inicio', ArchivosController.listarArchivosCompartidoInicio);
+router.get('/archivos-compartido', ArchivosController.listarArchivosEspecificosCompartido);
 
 module.exports = router;

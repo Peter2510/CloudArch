@@ -106,11 +106,6 @@ const eliminarDirectorio = async (req, res) => {
         _id: id
     }).exec();
 
-    //const partes = dir.directorio_padre.split('/');
-    //partes.shift();
-    //partes.unshift("papelera"); 
-    //const directorio_papelera = partes.join('/'); 
-
     //"eliminar" del root
     const eliminarRoot = await Directorios.updateOne({
         _id: Object(id)
@@ -143,13 +138,6 @@ const eliminarDirectorio = async (req, res) => {
     } else {
         res.json({ update: false });
     }
-
-
-
-
-
-
-
 
 }
 
@@ -212,9 +200,6 @@ async function moverHijosAPapelera(path_directorio, propietario) {
         
     }
 
-    
-    
-
 }
 
 const listarDirectoriosPapeleraInicio = async (req, res) => {
@@ -246,6 +231,130 @@ const listarDirectoriossEspecificosPapelera = async (req, res) => {
 
 }
 
+//copiar directorio
+
+const copiarDirectorio = async (req, res) => {
+
+    const { id } = req.body;
+
+    try {
+    
+        const dir = await Directorios.findOne({
+            _id: id
+        }).exec();
+    
+        let path_directorio = '';
+        dir.directorio_padre === "/" ? path_directorio = `${dir.directorio_padre}${dir.nombre}` : path_directorio = `${dir.directorio_padre}/${dir.nombre}`;
+        let propietario = dir.propietario;
+    
+        //"agregar" del root
+        const padre = new padres({
+            path: `${path_directorio}_copia`,
+            propietario: propietario
+        }).save();
+
+        //copiar directorio padre
+
+        
+        
+        const nuevoDirectorio = new Directorios({
+            nombre: `${dir.nombre}_copia`,
+            fecha_creacion: dir.fecha_creacion,
+            directorio_padre: `${dir.directorio_padre}`,
+            propietario: dir.propietario
+        });
+
+        const resultado = await nuevoDirectorio.save();
+
+    
+        //copiar directorios anidados
+    
+        await copiarHijos(path_directorio,propietario);
+
+        res.json({ copiado: true });
+        
+    } catch (error) {
+        
+        res.json({ copiado: true });
+
+    }
+
+}
+
+
+async function copiarHijos(path_directorio, propietario) {
+
+    const hijos = await Directorios.find({
+        directorio_padre: path_directorio,
+        propietario: propietario
+    });
+
+    const archivos = await Archivos.find({
+        directorio_padre: path_directorio,
+        propietario: propietario
+    });
+
+    
+
+    
+    //si tenia hijos, renombrar path del archivo y carpetas, primero archivos
+    if (hijos.length > 0 || archivos.length > 0) {
+
+        archivos.forEach(async (archivo)=>{
+
+            //crear copia del archivo encontrado
+        
+            const nuevoArchivo = new Archivos({
+                nombre: archivo.nombre,
+                extension: archivo.extension,
+                contenido: archivo.contenido,
+                fecha_creacion: archivo.fecha_creacion,
+                directorio_padre: `${archivo.directorio_padre}_copia`,
+                propietario: archivo.propietario
+            });
+
+            const resultado = await nuevoArchivo.save();
+
+        });
+               
+        
+        hijos.forEach(async (hijo) => {
+        
+            //"copiar" anidado
+
+            const nuevoDirectorio = new Directorios({
+                nombre: `${hijo.nombre}`,
+                fecha_creacion: hijo.fecha_creacion,
+                directorio_padre: `${hijo.directorio_padre}_copia`,
+                propietario: hijo.propietario
+            });
+
+            const resultado = await nuevoDirectorio.save();
+
+            let directorio_p = nuevoDirectorio.directorio_padre;
+        
+            const padre = new padres({
+                path: `${directorio_p}`,
+                propietario: propietario
+            }).save();
+            
+                
+            let path_directorioAux = '';
+            path_directorio = path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
+        
+            copiarHijos(path_directorioAux,propietario);
+
+        });
+
+
+    }else{
+        
+    }
+
+}
+
+
+
 module.exports = {
     listarDirectorios,
     obtenerDirectorio,
@@ -253,5 +362,6 @@ module.exports = {
     detallesDirectorio,
     eliminarDirectorio,
     listarDirectoriosPapeleraInicio,
-    listarDirectoriossEspecificosPapelera
+    listarDirectoriossEspecificosPapelera,
+    copiarDirectorio
 }

@@ -62,6 +62,22 @@ export class DirectorioComponent implements OnInit{
     });
   }
 
+  public copiarDirectorio(){
+
+    this.cloudService.copiarDirectorio(this.id_directorio).subscribe((confirmacion)=>{
+
+      if(confirmacion.copiado){
+        
+        Swal.fire({title:'Se guardo la copia del directorio',icon:'success'});
+
+      }else{
+        Swal.fire({title:'Error al guardar la copia del directorio',icon:'error'});
+      }
+
+    });
+
+  }
+
 
 
 }

@@ -240,7 +240,7 @@ const compartirArchivo = async (req, res) => {
                     contenido: archivo.contenido,
                     fecha_creacion: archivo.fecha_creacion,
                     directorio_padre: 'compartido',
-                    propietario: usuario,
+                    propietario: archivo.propietario,
                     fecha_compartido:fechaFormateada,
                     hora_compartido:horaFormateada
                 });
@@ -258,8 +258,37 @@ const compartirArchivo = async (req, res) => {
         res.json({ share: false });
     }
 
+}
+
+const listarArchivosCompartidoInicio = async (req, res) => {
+
+    const directorio = req.query.directorio_padre;
+    const propietario = req.query.propietario;
+   
+    const compartido = await Archivos.find({
+        directorio_padre: directorio,
+        propietario:propietario
+    }).exec();
+
+    res.json(compartido);
 
 }
+
+const listarArchivosEspecificosCompartido = async (req, res) => {
+
+    const directorio = req.query.directorio_padre;
+    const propietario = req.query.propietario;
+
+    const compartido = await Archivos.find({
+        directorio_padre: directorio,
+        propietario: propietario
+    }).exec();
+
+
+    res.json(compartido);
+
+}
+
 
 module.exports = {
     listarArchivos,
@@ -272,5 +301,7 @@ module.exports = {
     listarArchivosPapeleraInicio,
     listarArchivosEspecificosPapelera,
     copiarArchivo,
-    compartirArchivo
+    compartirArchivo,
+    listarArchivosCompartidoInicio,
+    listarArchivosEspecificosCompartido
 }

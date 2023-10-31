@@ -28,7 +28,7 @@ export class CodeEditorComponent implements OnInit {
   options = {
     contextmenu: true,
     minimap: {
-      enabled: true
+      enabled: false
     }, fontSize: 15
   };
 
