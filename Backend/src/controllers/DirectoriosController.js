@@ -71,7 +71,7 @@ const crearDirectorio = async (req, res) => {
 
         res.json({ insertado: true });
     } catch (error) {
-        
+
         res.json({ insertado: false });
     }
 
@@ -130,7 +130,7 @@ const eliminarDirectorio = async (req, res) => {
 
     //Eliminando directorios anidados
 
-        await moverHijosAPapelera(path_directorio,propietario);
+    await moverHijosAPapelera(path_directorio, propietario);
 
 
     if (eliminarRoot.matchedCount == 1) {
@@ -153,12 +153,12 @@ async function moverHijosAPapelera(path_directorio, propietario) {
         propietario: propietario
     });
 
-    
+
 
     //si tenia hijos, renombrar path del archivo y carpetas, primero archivos
     if (hijos.length > 0) {
 
-        archivos.forEach(async (archivo)=>{
+        archivos.forEach(async (archivo) => {
 
             await Archivos.updateMany(
                 {
@@ -171,10 +171,10 @@ async function moverHijosAPapelera(path_directorio, propietario) {
             )
 
         });
-               
-        
+
+
         hijos.forEach(async (hijo) => {
-        
+
             //"eliminar" anidado
 
             await Directorios.updateMany(
@@ -185,19 +185,19 @@ async function moverHijosAPapelera(path_directorio, propietario) {
                 {
                     $set: { directorio_padre: "papelera" + path_directorio }
                 }).exec();
-            
-                
+
+
 
             let path_directorioAux = '';
             path_directorio = path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
-        
-            moverHijosAPapelera(path_directorioAux,propietario);
+
+            moverHijosAPapelera(path_directorioAux, propietario);
 
         });
 
 
-    }else{
-        
+    } else {
+
     }
 
 }
@@ -224,7 +224,7 @@ const listarDirectoriossEspecificosPapelera = async (req, res) => {
     const propietario = req.query.propietario;
     const directorioContenido = await Directorios.find({
         directorio_padre: directorio,
-        propietario:propietario
+        propietario: propietario
     }).exec();
 
     res.json(directorioContenido);
@@ -233,48 +233,85 @@ const listarDirectoriossEspecificosPapelera = async (req, res) => {
 
 //copiar directorio
 
+async function crearNombreUnico(dir) {
+    let nombreBase = dir.nombre;
+    let contador = 0;
+    let nombreExiste = '';
+
+    while (true) {
+        const buscar = await Directorios.findOne({
+            nombre: `${nombreBase}${nombreExiste}`,
+            directorio_padre: dir.directorio_padre,
+            propietario: dir.propietario
+        }).exec();
+
+        if (!buscar) {
+            // El nombre no existe en la base de datos, es único.
+            break;
+        }
+
+        // Agregar un sufijo al nombre y seguir buscando.
+        contador++;
+        nombreExiste = `_copia_${contador}`;
+    }
+
+    return nombreExiste;
+}
+
+
+
 const copiarDirectorio = async (req, res) => {
 
     const { id } = req.body;
 
     try {
-    
+
         const dir = await Directorios.findOne({
             _id: id
         }).exec();
-    
+
         let path_directorio = '';
         dir.directorio_padre === "/" ? path_directorio = `${dir.directorio_padre}${dir.nombre}` : path_directorio = `${dir.directorio_padre}/${dir.nombre}`;
         let propietario = dir.propietario;
-    
-        //"agregar" del root
-        const padre = new padres({
-            path: `${path_directorio}_copia`,
-            propietario: propietario
-        }).save();
 
         //copiar directorio padre
 
-        
-        
+        //validar si existe un directorio con el mismo nombre
+
+        const nombreExiste = await crearNombreUnico(dir);
+
+
+        //crear directorio padre
+
         const nuevoDirectorio = new Directorios({
-            nombre: `${dir.nombre}_copia`,
+            nombre: `${dir.nombre}${nombreExiste}`,
             fecha_creacion: dir.fecha_creacion,
-            directorio_padre: `${dir.directorio_padre}`,
+            directorio_padre: dir.directorio_padre,
             propietario: dir.propietario
         });
 
         const resultado = await nuevoDirectorio.save();
 
-    
+        //crear padre
+
+        // Crear el padre
+
+
+        // "Agregar" del root
+        const padre = new padres({
+        path: `${path_directorio}${nombreExiste}`,
+        propietario: dir.propietario
+        }).save();
+
+
         //copiar directorios anidados
-    
-        await copiarHijos(path_directorio,propietario);
+
+        await copiarHijos(path_directorio, propietario, nombreExiste);
 
         res.json({ copiado: true });
-        
+
     } catch (error) {
-        
+
         res.json({ copiado: true });
 
     }
@@ -282,7 +319,9 @@ const copiarDirectorio = async (req, res) => {
 }
 
 
-async function copiarHijos(path_directorio, propietario) {
+async function copiarHijos(path_directorio, propietario, nuevoNombre) {
+
+
 
     const hijos = await Directorios.find({
         directorio_padre: path_directorio,
@@ -294,61 +333,61 @@ async function copiarHijos(path_directorio, propietario) {
         propietario: propietario
     });
 
-    
 
-    
+
+
     //si tenia hijos, renombrar path del archivo y carpetas, primero archivos
     if (hijos.length > 0 || archivos.length > 0) {
 
-        archivos.forEach(async (archivo)=>{
+        archivos.forEach(async (archivo) => {
 
             //crear copia del archivo encontrado
-        
+
             const nuevoArchivo = new Archivos({
                 nombre: archivo.nombre,
                 extension: archivo.extension,
                 contenido: archivo.contenido,
                 fecha_creacion: archivo.fecha_creacion,
-                directorio_padre: `${archivo.directorio_padre}_copia`,
+                directorio_padre: `${archivo.directorio_padre}${nuevoNombre}`,
                 propietario: archivo.propietario
             });
 
             const resultado = await nuevoArchivo.save();
 
         });
-               
-        
+
+
         hijos.forEach(async (hijo) => {
-        
+
             //"copiar" anidado
 
             const nuevoDirectorio = new Directorios({
                 nombre: `${hijo.nombre}`,
                 fecha_creacion: hijo.fecha_creacion,
-                directorio_padre: `${hijo.directorio_padre}_copia`,
+                directorio_padre: `${hijo.directorio_padre}${nuevoNombre}`,
                 propietario: hijo.propietario
             });
 
             const resultado = await nuevoDirectorio.save();
 
             let directorio_p = nuevoDirectorio.directorio_padre;
-        
+
             const padre = new padres({
                 path: `${directorio_p}`,
                 propietario: propietario
             }).save();
-            
-                
+
+
             let path_directorioAux = '';
             path_directorio = path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
-        
-            copiarHijos(path_directorioAux,propietario);
+
+            copiarHijos(path_directorioAux, propietario, nuevoNombre);
 
         });
 
 
-    }else{
-        
+    } else {
+
     }
 
 }
