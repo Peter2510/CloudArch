@@ -292,9 +292,6 @@ const copiarDirectorio = async (req, res) => {
 
         const resultado = await nuevoDirectorio.save();
 
-        //crear padre
-
-        // Crear el padre
 
 
         // "Agregar" del root

@@ -15,9 +15,10 @@ import Swal from 'sweetalert2';
 export class CodeEditorComponent implements OnInit {
 
   @Input() archivo: Archivo;
-  esUsuario: boolean = true;
+
   propietario = this.loginService.getNombreUsuario();
   enPapelera: boolean;
+  enCompartido: boolean;
   theme = 'vs-dark';
   codeModel: CodeModel = {
     language: 'html',
@@ -43,6 +44,7 @@ export class CodeEditorComponent implements OnInit {
       this.directorios = data.directorios;
     })
     this.enPapelera = this.archivo.directorio_padre.startsWith('papelera');
+    this.enCompartido = this.archivo.directorio_padre.startsWith('compartido');
     this.mostarUsuarios()
   }
 
@@ -215,6 +217,41 @@ export class CodeEditorComponent implements OnInit {
         /* eliminar archivo */
         this.cloudService.eliminarArchivo(this.archivo._id).subscribe((confirmacion) => {
           if (confirmacion.update) {
+            Swal.fire({
+              title: 'Se elimino correctamente el archivo',
+              icon: 'success'
+            }).then(() => {
+              window.location.reload()
+            });
+          } else {
+            Swal.fire({
+              title: 'No pudo eliminarse el archivo',
+              icon: 'error'
+            }
+            );
+          }
+        });
+      }
+    });
+  }
+
+  public eliminarArchivoCompartido() {
+
+    Swal.fire({
+      title: `¿Deseas eliminar el archivo ${this.archivo.nombre}${this.archivo.extension} definitivamente?`,
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      confirmButtonColor: '#E22020',
+      cancelButtonText: 'Cancelar',
+      icon: 'question'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        /* eliminar archivo */
+        this.cloudService.eliminarArchivoCompartido(this.archivo._id).subscribe((confirmacion) => {
+          console.log(confirmacion)
+          if (confirmacion.delete) {
             Swal.fire({
               title: 'Se elimino correctamente el archivo',
               icon: 'success'

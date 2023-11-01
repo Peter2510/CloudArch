@@ -114,6 +114,14 @@ export class CloudService {
      return this.http.put<any>(`${this.baseURL}/eliminar-archivo`, request);
   }
 
+  public eliminarArchivoCompartido(id:any):Observable<any>{
+    const request = {
+      id: id
+    }
+      
+     return this.http.put<any>(`${this.baseURL}/eliminar-archivo-compartido`, request);
+  }
+
   public crearArchivo(archivo:any):Observable<any>{
     const request = {
       nombre: archivo.nombre,

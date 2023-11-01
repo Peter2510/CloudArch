@@ -2,9 +2,11 @@
 
   <h3>Directorio actual: {{archivo.directorio_padre}}</h3>
   <h3>Propietario: {{archivo.propietario}}</h3>
+  <h3 *ngIf="archivo.usuario_compartido!=null" >Compartido: {{archivo.usuario_compartido}}</h3>
   <h3>Creacion: {{archivo.fecha_creacion}}</h3>
 
-  <div style="display: flex; align-items: center;" class="mb-5" *ngIf="!enPapelera">
+  <img *ngIf="enCompartido" src="assets/img/delete1.png" class="me-3 cursor" (click)="eliminarArchivoCompartido()">
+  <div style="display: flex; align-items: center;" class="mb-5" *ngIf="!enPapelera  && !enCompartido">
     <img src="assets/img/delete1.png" class="me-3 cursor" (click)="eliminarArchivo()">
     <button type="button" class="btn btn-warning" (click)="copiarArchivo()">Copiar</button>
     <button type="button" class="btn btn-warning ms-4" (click)="renombrarArchivo()">Editar nombre</button>
@@ -30,7 +32,7 @@
     </div>
   </div>
 
-  <div class="form__group" *ngIf="!enPapelera">
+  <div class="form__group" *ngIf="!enPapelera && !enCompartido">
     <h1 class=" text-center mt-5">Usuarios a compartir</h1>
     <label for="searchInput">Buscar nombre:</label>
     <input type="text" id="searchInput" list="nameList">

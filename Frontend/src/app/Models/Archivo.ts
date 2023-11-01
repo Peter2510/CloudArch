@@ -6,6 +6,7 @@ extension:String;
 contenido:String;
 directorio_padre:String;
 propietario:String;
+usuario_compartido:String;
 fecha_creacion:String;
 fecha_compartido:String;
 hora_compartido:String;

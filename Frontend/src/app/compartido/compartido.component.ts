@@ -59,7 +59,7 @@ export class CompartidoComponent {
   public entrarCarpeta(pathCarpeta: String,propietario:String) {
     this.rutas.push(pathCarpeta);
     this.propietario = propietario;
-    this.path = "papelera/" + this.rutas.join('/');
+    this.path = "compartido/" + this.rutas.join('/');
     
     this.obtenerDirectoriosEspecificosPapelera();
     this.obtenerArchivosEspecificosPapelera();
@@ -70,13 +70,13 @@ export class CompartidoComponent {
     this.rutas.pop();
 
     if(this.rutas.length==0){
-      this.path = "papelera";
+      this.path = "compartido";
       this.obtenerArchivosInicio();
       this.obtenerDirectoriosInicio();
 
     }else{
       
-      this.path = "papelera/" + this.rutas.join('/');  
+      this.path = "compartido/" + this.rutas.join('/');  
       this.obtenerArchivosEspecificosPapelera()
       this.obtenerDirectoriosEspecificosPapelera()
     }
@@ -137,8 +137,7 @@ export class CompartidoComponent {
       `<p><strong>Creado:</strong> ${archivo.fecha_creacion}</p>`+
       `</div>`,
       confirmButtonText:'Aceptar'
-      
-    
+          
     });
   }
 

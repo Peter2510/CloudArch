@@ -134,6 +134,23 @@ const eliminarArchivo = async (req, res) => {
 
 }
 
+const eliminarArchivoCompartido = async (req, res) => {
+
+    const { id } = req.body;
+
+    const eliminar = await Archivos.deleteOne({
+        _id: Object(id)
+    }).exec();
+
+
+    if (eliminar.deletedCount == 1) {
+        res.json({ delete: true });
+    } else {
+        res.json({ delete: false });
+    }
+
+}
+
 const crearArchivo = async (req, res) => {
 
     const nombre = req.body.nombre;
@@ -241,6 +258,7 @@ const compartirArchivo = async (req, res) => {
                     fecha_creacion: archivo.fecha_creacion,
                     directorio_padre: 'compartido',
                     propietario: archivo.propietario,
+                    usuario_compartido: usuario,
                     fecha_compartido:fechaFormateada,
                     hora_compartido:horaFormateada
                 });
@@ -267,7 +285,7 @@ const listarArchivosCompartidoInicio = async (req, res) => {
    
     const compartido = await Archivos.find({
         directorio_padre: directorio,
-        propietario:propietario
+        usuario_compartido:propietario
     }).exec();
 
     res.json(compartido);
@@ -297,6 +315,7 @@ module.exports = {
     renombrarArchivo,
     moverArchivo,
     eliminarArchivo,
+    eliminarArchivoCompartido,
     crearArchivo,
     listarArchivosPapeleraInicio,
     listarArchivosEspecificosPapelera,
