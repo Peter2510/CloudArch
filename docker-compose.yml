@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: mongo:7.0.2
+    container_name: db_cloud_arch
+    ports:
+      - 27018:27017
+    volumes:
+      - ./Backend/data:/data/db  # Acceder a la carpeta "data" dentro de "frontend"
+      - ./Backend/data/log:/var/log/mongodb  # Acceder a la carpeta "data" dentro de "frontend"
+
+  backend:
+    container_name: backend_cloud_arch
+    build: ./Backend
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - 3000:3000
+
+  fronted:
+    container_name: fronted_cloud_arch
+    build: ./Frontend
+    depends_on:
+      - backend
+    ports:
+      - 4200:4200
+  
+
+
