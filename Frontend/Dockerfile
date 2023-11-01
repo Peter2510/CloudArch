@@ -1,19 +1,19 @@
-# Stage 1: Build the Node.js application
+# Stage 1: Construir la aplicacion Node.js 
 FROM node:18.18.0 AS build
 
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia los archivos del proyecto del cliente de React al directorio de trabajo del contenedor
+# Copiar los archivos del proyecto del cliente de Angular al directorio de trabajo del contenedor
 COPY package.json package-lock.json ./
 
 # Instala las dependencias del proyecto
 RUN npm ci
 
-# Copia el resto de los archivos del proyecto del cliente de React al directorio de trabajo del contenedor
+# Copia el resto de los archivos del proyecto del cliente de Angular al directorio de trabajo del contenedor
 COPY . .
 
-# Compila el proyecto del cliente de React
+# Compila el proyecto del cliente de Angular
 RUN npm run build
 
 # STAGE 2: run
