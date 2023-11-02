@@ -198,6 +198,15 @@ export class CloudService {
 
   }
 
+  public moverDirectorio(id:any,nuevo_directorio:any):Observable<any>{
+    const request = {
+      id: id,
+      nuevo_directorio_padre:nuevo_directorio
+    }
+      
+     return this.http.put<any>(`${this.baseURL}/mover-directorio`, request);
+  }  
+
   
   
 }

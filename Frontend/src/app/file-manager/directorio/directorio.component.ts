@@ -8,23 +8,27 @@ import Swal from 'sweetalert2';
   templateUrl: './directorio.component.html',
   styleUrls: ['./directorio.component.css']
 })
-export class DirectorioComponent implements OnInit{
+export class DirectorioComponent implements OnInit {
 
 
   @Input() id_directorio: String;
   @Input() propietario: String;
-  directorio:Directorio;
+  directorio: Directorio;
+  directorios: [];
 
-  constructor(private cloudService:CloudService){
+  constructor(private cloudService: CloudService) {
 
   }
 
   ngOnInit(): void {
-    
-    this.cloudService.detalleDirectorio(this.id_directorio).subscribe((data)=>{
-    this.directorio = data;
 
+    this.cloudService.detalleDirectorio(this.id_directorio).subscribe((data) => {
+      this.directorio = data;
     });
+
+    this.cloudService.listarDirectorios(this.propietario).subscribe((data) => {
+      this.directorios = data.directorios;
+    })
 
   }
 
@@ -42,7 +46,7 @@ export class DirectorioComponent implements OnInit{
 
       if (result.isConfirmed) {
         /* eliminar archivo */
-        this.cloudService.eliminarDirectorio(this.directorio._id,this.propietario).subscribe((confirmacion) => {
+        this.cloudService.eliminarDirectorio(this.directorio._id, this.propietario).subscribe((confirmacion) => {
           if (confirmacion.update) {
             Swal.fire({
               title: 'Se elimino correctamente el directorio',
@@ -62,16 +66,63 @@ export class DirectorioComponent implements OnInit{
     });
   }
 
-  public copiarDirectorio(){
+  public copiarDirectorio() {
 
-    this.cloudService.copiarDirectorio(this.id_directorio).subscribe((confirmacion)=>{
+    this.cloudService.copiarDirectorio(this.id_directorio).subscribe((confirmacion) => {
 
-      if(confirmacion.copiado){
-        
-        Swal.fire({title:'Se guardo la copia del directorio',icon:'success'});
+      if (confirmacion.copiado) {
 
-      }else{
-        Swal.fire({title:'Error al guardar la copia del directorio',icon:'error'});
+        Swal.fire({ title: 'Se guardo la copia del directorio', icon: 'success' });
+
+      } else {
+        Swal.fire({ title: 'Error al guardar la copia del directorio', icon: 'error' });
+      }
+
+    });
+
+  }
+
+  public async moverDirectorio() {
+    Swal.fire({
+      title: 'Selecciona el nuevo directorio',
+      input: 'select',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: "Salir",
+      inputOptions: {
+        'Directorios': this.directorios
+      },
+      showCancelButton: true,
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        let nuevoDirectorio = this.directorios[result.value]
+
+        let directorio = {
+          nombre: this.directorio.nombre,
+          directorio_padre: nuevoDirectorio,
+          propietario: this.directorio.propietario
+        }
+
+        this.cloudService.directorio(directorio).subscribe((confirmacion) => {
+
+          if (!confirmacion.match) {
+
+              //Mover directorio
+              this.cloudService.moverDirectorio(this.id_directorio,nuevoDirectorio).subscribe((update)=>{
+                
+                if(update){
+                    Swal.fire({ title: `Se movio el directorio correctamente a la ruta seleccionada`, icon: 'success' });
+                }else{
+                    Swal.fire({ title: `No pudo moverse el directorio a la ruta seleccionada`, icon: 'error' });
+                }
+
+              })
+
+          } else {
+            Swal.fire({ title: `Ya existe un directorio con el nombre ${directorio.nombre} en la ruta seleccionada`, icon: 'error' })
+          }
+        });
       }
 
     });

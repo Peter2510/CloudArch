@@ -11,6 +11,7 @@ router.put('/eliminar-directorio', DirectoriosController.eliminarDirectorio);
 router.get('/directorios-papelera-inicio', DirectoriosController.listarDirectoriosPapeleraInicio);
 router.get('/directorios-papelera', DirectoriosController.listarDirectoriossEspecificosPapelera);
 router.post('/copiar-directorio',DirectoriosController.copiarDirectorio);
+router.put('/mover-directorio',DirectoriosController.moverDirectorio)
 
 
  

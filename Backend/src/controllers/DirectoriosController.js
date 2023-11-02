@@ -97,11 +97,13 @@ const eliminarDirectorio = async (req, res) => {
     }).exec();
 
     //"eliminar" del root
-    const eliminarRoot = await Directorios.updateOne({
-        _id: Object(id)
-    },
+    const eliminarRoot = await Directorios.updateOne(
         {
-            $set: {
+            _id: Object(id)
+        },
+        {
+            $set:
+            {
                 directorio_padre: "papelera"
             }
         }
@@ -351,7 +353,7 @@ async function copiarHijos(path_directorio, propietario, nuevoNombre) {
 
 
             let path_directorioAux = '';
-            path_directorio = path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
+            path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
 
             copiarHijos(path_directorioAux, propietario, nuevoNombre);
 
@@ -363,6 +365,126 @@ async function copiarHijos(path_directorio, propietario, nuevoNombre) {
 
 }
 
+
+
+
+
+
+
+const moverDirectorio = async (req, res) => {
+
+    try {
+        const { id, nuevo_directorio_padre } = req.body;
+
+        const dir = await Directorios.findOne({
+            _id: id
+        }).exec();
+
+        //path del directorio a mover
+        let path_directorio = '';
+        dir.directorio_padre === "/" ? path_directorio = `${dir.directorio_padre}${dir.nombre}` : path_directorio = `${dir.directorio_padre}/${dir.nombre}`
+
+        //Eliminar de padres
+        const eliminarPadre = await padres.deleteOne({
+            path: path_directorio,
+            propietario: dir.propietario
+        }).exec();
+
+        const eliminarHijosPadre = await padres.deleteMany({
+            path: { $regex: new RegExp(`^${path_directorio}/`) },
+            propietario: dir.propietario
+        }).exec();
+
+        //mover carpeta root
+        const moverRoot = await Directorios.updateOne(
+            {
+                _id: Object(id)
+            },
+            {
+                $set:
+                {
+                    directorio_padre: nuevo_directorio_padre
+                }
+            }
+        ).exec();
+
+        moverHijosDirectorio(path_directorio, dir.propietario,nuevo_directorio_padre);
+
+        res.json({ update: true });
+
+    } catch (error) {
+        res.json({ update: false });
+    }
+
+
+
+}
+
+async function moverHijosDirectorio(path_directorio, propietario, nuevo_directorio_padre) {
+
+    const directorios = await Directorios.find({
+        directorio_padre: path_directorio,
+        propietario: propietario
+    });
+
+    const archivos = await Archivos.find({
+        directorio_padre: path_directorio,
+        propietario: propietario
+    });
+
+    //si tenia hijos, renombrar path del archivo y carpetas, primero archivos
+    if (directorios.length > 0 || archivos.length > 0) {
+
+        archivos.forEach(async (archivo) => {
+
+            await Archivos.updateMany(
+                {
+                    directorio_padre: path_directorio,
+                    propietario: propietario
+                },
+                {
+                    $set: { directorio_padre: `${nuevo_directorio_padre}${path_directorio}` }
+                }
+            )
+
+        });
+
+
+        directorios.forEach(async (hijo) => {
+
+            //"eliminar" anidado
+
+            await Directorios.updateMany(
+                {
+                    directorio_padre: path_directorio,
+                    propietario: propietario
+                },
+                {
+                    $set: { directorio_padre: `${nuevo_directorio_padre}${path_directorio}` }
+                }).exec();
+
+            await new padres({
+                path: `${nuevo_directorio_padre}${hijo.directorio_padre}/${hijo.nombre}`,
+                propietario: propietario
+            }).save();
+
+            let path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
+            let nuevo_directorio_padre_aux = `${nuevo_directorio_padre}`
+
+            moverHijosDirectorio(path_directorioAux, propietario, nuevo_directorio_padre_aux);
+
+        });
+
+
+    } else {
+
+    }
+
+}
+
+
+
+
 module.exports = {
     listarDirectorios,
     obtenerDirectorio,
@@ -371,5 +493,6 @@ module.exports = {
     eliminarDirectorio,
     listarDirectoriosPapeleraInicio,
     listarDirectoriossEspecificosPapelera,
-    copiarDirectorio
+    copiarDirectorio,
+    moverDirectorio
 }
