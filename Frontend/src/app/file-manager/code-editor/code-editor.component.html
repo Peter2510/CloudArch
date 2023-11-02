@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="!enPapelera">
+  <div class="row" *ngIf="!enPapelera  && !enCompartido">
     <div class="d-flex justify-content-center mt-5">
       <button class="btn btn-success" (click)="editarContenido()">
         Guardar cambios

@@ -134,7 +134,10 @@ export class CompartidoComponent {
       `<p><strong>Nombre:</strong> ${archivo.nombre}${archivo.extension}</p>`+
       `<p><strong>Directorio:</strong> ${archivo.directorio_padre}</p>`+
       `<p><strong>Propietario:</strong> ${archivo.propietario}</p>`+
+      `<p><strong>Compartido con:</strong> ${archivo.usuario_compartido }</p>`+
       `<p><strong>Creado:</strong> ${archivo.fecha_creacion}</p>`+
+      `<p><strong>Fecha compartido:</strong> ${archivo.fecha_compartido}</p>`+
+      `<p><strong>Hora compartido:</strong> ${archivo.hora_compartido}</p>`+
       `</div>`,
       confirmButtonText:'Aceptar'
           

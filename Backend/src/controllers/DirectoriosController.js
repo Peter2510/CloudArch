@@ -28,15 +28,10 @@ const obtenerDirectorio = async (req, res) => {
         propietario: propietario
     }).exec();
 
-
     if (directorio) {
-
         res.json({ match: true })
-
     } else {
-
         res.json({ match: false })
-
     }
 
 }
@@ -85,15 +80,10 @@ const detallesDirectorio = async (req, res) => {
         _id: _id
     }).exec();
 
-
     if (directorio) {
-
         res.json(directorio);
-
     } else {
-
         res.json('')
-
     }
 
 }
@@ -127,11 +117,12 @@ const eliminarDirectorio = async (req, res) => {
         propietario: propietario
     }).exec();
 
-
-    //Eliminando directorios anidados
+    const eliminarHijosPadre = await padres.deleteMany({
+        path: { $regex: new RegExp(`^${path_directorio}/`) },
+        propietario: propietario
+    }).exec();
 
     await moverHijosAPapelera(path_directorio, propietario);
-
 
     if (eliminarRoot.matchedCount == 1) {
         res.json({ update: true });
@@ -143,7 +134,7 @@ const eliminarDirectorio = async (req, res) => {
 
 async function moverHijosAPapelera(path_directorio, propietario) {
 
-    const hijos = await Directorios.find({
+    const directorios = await Directorios.find({
         directorio_padre: path_directorio,
         propietario: propietario
     });
@@ -154,9 +145,8 @@ async function moverHijosAPapelera(path_directorio, propietario) {
     });
 
 
-
     //si tenia hijos, renombrar path del archivo y carpetas, primero archivos
-    if (hijos.length > 0) {
+    if (directorios.length > 0 || archivos.length > 0) {
 
         archivos.forEach(async (archivo) => {
 
@@ -173,7 +163,7 @@ async function moverHijosAPapelera(path_directorio, propietario) {
         });
 
 
-        hijos.forEach(async (hijo) => {
+        directorios.forEach(async (hijo) => {
 
             //"eliminar" anidado
 
@@ -185,8 +175,6 @@ async function moverHijosAPapelera(path_directorio, propietario) {
                 {
                     $set: { directorio_padre: "papelera" + path_directorio }
                 }).exec();
-
-
 
             let path_directorioAux = '';
             path_directorio = path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
@@ -206,12 +194,9 @@ const listarDirectoriosPapeleraInicio = async (req, res) => {
 
     const directorio = req.query.directorio_padre;
 
-
     const papelera = await Directorios.find({
         directorio_padre: directorio
     }).exec();
-
-
 
     res.json(papelera);
 
@@ -258,8 +243,6 @@ async function crearNombreUnico(dir) {
     return nombreExiste;
 }
 
-
-
 const copiarDirectorio = async (req, res) => {
 
     const { id } = req.body;
@@ -292,12 +275,10 @@ const copiarDirectorio = async (req, res) => {
 
         const resultado = await nuevoDirectorio.save();
 
-
-
         // "Agregar" del root
         const padre = new padres({
-        path: `${path_directorio}${nombreExiste}`,
-        propietario: dir.propietario
+            path: `${path_directorio}${nombreExiste}`,
+            propietario: dir.propietario
         }).save();
 
 
@@ -318,8 +299,6 @@ const copiarDirectorio = async (req, res) => {
 
 async function copiarHijos(path_directorio, propietario, nuevoNombre) {
 
-
-
     const hijos = await Directorios.find({
         directorio_padre: path_directorio,
         propietario: propietario
@@ -329,9 +308,6 @@ async function copiarHijos(path_directorio, propietario, nuevoNombre) {
         directorio_padre: path_directorio,
         propietario: propietario
     });
-
-
-
 
     //si tenia hijos, renombrar path del archivo y carpetas, primero archivos
     if (hijos.length > 0 || archivos.length > 0) {
@@ -352,7 +328,6 @@ async function copiarHijos(path_directorio, propietario, nuevoNombre) {
             const resultado = await nuevoArchivo.save();
 
         });
-
 
         hijos.forEach(async (hijo) => {
 
@@ -382,14 +357,11 @@ async function copiarHijos(path_directorio, propietario, nuevoNombre) {
 
         });
 
-
     } else {
 
     }
 
 }
-
-
 
 module.exports = {
     listarDirectorios,
