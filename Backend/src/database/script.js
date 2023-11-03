@@ -237,7 +237,7 @@ db.directorios.insertMany(
             fecha_creacion: fechaFormateada
         },
         {
-            nombre: 'documentos',
+            nombre: 'configuraciones',
             directorio_padre: '/descargas',
             propietario: 'rgonz',
             fecha_creacion: fechaFormateada
@@ -283,7 +283,7 @@ db.padres.insertMany([
         propietario:'rgonz'
     },
     {
-        path:'/descargas/documentos',
+        path:'/descargas/configuraciones',
         propietario:'rgonz'
     }
 ]);
