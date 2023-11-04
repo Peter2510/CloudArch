@@ -374,26 +374,17 @@ async function copiarHijos(path_directorio, propietario, nuevoNombre) {
 const moverDirectorio = async (req, res) => {
 
     try {
+
+
         const { id, nuevo_directorio_padre } = req.body;
 
-        const dir = await Directorios.findOne({
+        const directorio_padre_a_mover = await Directorios.findOne({
             _id: id
         }).exec();
 
-        //path del directorio a mover
-        let path_directorio = '';
-        dir.directorio_padre === "/" ? path_directorio = `${dir.directorio_padre}${dir.nombre}` : path_directorio = `${dir.directorio_padre}/${dir.nombre}`
+        let path_padre_antiguo = `${directorio_padre_a_mover.directorio_padre}${directorio_padre_a_mover.nombre}`;
 
-        //Eliminar de padres
-        const eliminarPadre = await padres.deleteOne({
-            path: path_directorio,
-            propietario: dir.propietario
-        }).exec();
-
-        const eliminarHijosPadre = await padres.deleteMany({
-            path: { $regex: new RegExp(`^${path_directorio}/`) },
-            propietario: dir.propietario
-        }).exec();
+        //eliminar de padres
 
         //mover carpeta root
         const moverRoot = await Directorios.updateOne(
@@ -408,9 +399,13 @@ const moverDirectorio = async (req, res) => {
             }
         ).exec();
 
-        moverHijosDirectorio(path_directorio, dir.propietario,nuevo_directorio_padre);
+        let aux_nuevo_directorio_padre = `${nuevo_directorio_padre}/${directorio_padre_a_mover.nombre}`
+
+        //mover hijos
+        await moverHijosDirectorio(path_padre_antiguo,directorio_padre_a_mover.propietario,aux_nuevo_directorio_padre);
 
         res.json({ update: true });
+        
 
     } catch (error) {
         res.json({ update: false });
@@ -420,15 +415,17 @@ const moverDirectorio = async (req, res) => {
 
 }
 
-async function moverHijosDirectorio(path_directorio, propietario, nuevo_directorio_padre) {
+async function moverHijosDirectorio(path_antiguo, propietario, nuevo_directorio_padre) {
+
+    console.log("Mover de",path_antiguo, "a", nuevo_directorio_padre)
 
     const directorios = await Directorios.find({
-        directorio_padre: path_directorio,
+        directorio_padre: path_antiguo,
         propietario: propietario
     });
 
     const archivos = await Archivos.find({
-        directorio_padre: path_directorio,
+        directorio_padre: path_antiguo,
         propietario: propietario
     });
 
@@ -439,11 +436,11 @@ async function moverHijosDirectorio(path_directorio, propietario, nuevo_director
 
             await Archivos.updateMany(
                 {
-                    directorio_padre: path_directorio,
+                    directorio_padre: path_antiguo,
                     propietario: propietario
                 },
                 {
-                    $set: { directorio_padre: `${nuevo_directorio_padre}${path_directorio}` }
+                    $set: { directorio_padre: `${nuevo_directorio_padre}` }
                 }
             )
 
@@ -456,22 +453,22 @@ async function moverHijosDirectorio(path_directorio, propietario, nuevo_director
 
             await Directorios.updateMany(
                 {
-                    directorio_padre: path_directorio,
+                    directorio_padre: path_antiguo,
                     propietario: propietario
                 },
                 {
-                    $set: { directorio_padre: `${nuevo_directorio_padre}${path_directorio}` }
+                    $set: { directorio_padre: `${nuevo_directorio_padre}`}
                 }).exec();
 
-            await new padres({
+            /* await new padres({
                 path: `${nuevo_directorio_padre}${hijo.directorio_padre}/${hijo.nombre}`,
                 propietario: propietario
-            }).save();
+            }).save();*/
 
-            let path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
-            let nuevo_directorio_padre_aux = `${nuevo_directorio_padre}`
+            let path_antiguo_aux = `${hijo.directorio_padre}/${hijo.nombre}`
+            let nuevo_directorio_padre_aux = `${nuevo_directorio_padre}/${hijo.nombre}`
 
-            moverHijosDirectorio(path_directorioAux, propietario, nuevo_directorio_padre_aux);
+            await  moverHijosDirectorio(path_antiguo_aux, propietario, nuevo_directorio_padre_aux);
 
         });
 
