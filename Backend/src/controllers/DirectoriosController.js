@@ -382,7 +382,7 @@ const moverDirectorio = async (req, res) => {
             _id: id
         }).exec();
 
-        let path_padre_antiguo = `${directorio_padre_a_mover.directorio_padre}${directorio_padre_a_mover.nombre}`;
+        let path_padre_antiguo = `${directorio_padre_a_mover.directorio_padre}/${directorio_padre_a_mover.nombre}`;
 
         //eliminar de padres
 
@@ -415,7 +415,11 @@ const moverDirectorio = async (req, res) => {
 
 }
 
-async function moverHijosDirectorio(path_antiguo, propietario, nuevo_directorio_padre) {
+async function moverHijosDirectorio(path, propietario, nuevo_directorio) {
+
+    const path_antiguo = path.replace(/\/\//g, '/');
+                             
+    const nuevo_directorio_padre = nuevo_directorio.replace(/\/\//g, '/');
 
     console.log("Mover de",path_antiguo, "a", nuevo_directorio_padre)
 
