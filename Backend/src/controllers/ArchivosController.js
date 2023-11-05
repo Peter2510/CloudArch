@@ -180,6 +180,31 @@ const crearArchivo = async (req, res) => {
 
 }
 
+async function crearNombreUnico(archivo) {
+    let nombreBase = archivo.nombre;
+    let contador = 0;
+    let nombreExiste = '';
+
+    while (true) {
+        const buscar = await Archivos.findOne({
+            nombre: `${nombreBase}${nombreExiste}`,
+            directorio_padre: archivo.directorio_padre,
+            propietario: archivo.propietario
+        }).exec();
+
+        if (!buscar) {
+            // El nombre no existe en la base de datos, es único.
+            break;
+        }
+
+        // Agregar un sufijo al nombre y seguir buscando.
+        contador++;
+        nombreExiste = `_copia_${contador}`;
+    }
+
+    return nombreExiste;
+}
+
 const copiarArchivo = async (req, res) => {
 
     const id = req.body.id;
@@ -191,8 +216,11 @@ const copiarArchivo = async (req, res) => {
     const fechaActual = new Date();
     const fechaFormateada = fechaActual.toLocaleDateString('es-ES');
 
+    //nombre unico
+    const nombreExiste = await crearNombreUnico(archivo);
+
     const nuevoArchivo = new Archivos({
-        nombre: `${archivo.nombre}-Copia`,
+        nombre: `${archivo.nombre}${nombreExiste}`,
         extension: archivo.extension,
         contenido: archivo.contenido,
         fecha_creacion: fechaFormateada,
