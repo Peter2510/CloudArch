@@ -90,62 +90,84 @@ const detallesDirectorio = async (req, res) => {
 
 const eliminarDirectorio = async (req, res) => {
 
-    const { id, propietario } = req.body;
+    try {
 
-    const dir = await Directorios.findOne({
-        _id: id
-    }).exec();
 
-    //"eliminar" del root
-    const eliminarRoot = await Directorios.updateOne(
-        {
-            _id: Object(id)
-        },
-        {
-            $set:
+        const { id } = req.body;
+
+        let nuevo_directorio_padre = "papelera";
+
+        const directorio_padre_a_mover = await Directorios.findOne({
+            _id: id
+        }).exec();
+
+        let path_padre_antiguo = `${directorio_padre_a_mover.directorio_padre}/${directorio_padre_a_mover.nombre}`;
+
+        //path del directorio a mover
+        let path_directorio = '';
+        directorio_padre_a_mover.directorio_padre === "/" ? path_directorio = `${directorio_padre_a_mover.directorio_padre}${directorio_padre_a_mover.nombre}` : path_directorio = `${directorio_padre_a_mover.directorio_padre}/${directorio_padre_a_mover.nombre}`
+
+        //Eliminar de padres
+        const eliminarPadre = await padres.deleteOne({
+            path: path_directorio,
+            propietario: directorio_padre_a_mover.propietario
+        }).exec();
+
+        const eliminarHijosPadre = await padres.deleteMany({
+            path: { $regex: new RegExp(`^${path_directorio}/`) },
+            propietario: directorio_padre_a_mover.propietario
+        }).exec();
+
+        //Agregar nuevo path a padres
+
+
+        //mover carpeta root
+        const moverRoot = await Directorios.updateOne(
             {
-                directorio_padre: "papelera"
+                _id: Object(id)
+            },
+            {
+                $set:
+                {
+                    directorio_padre: nuevo_directorio_padre
+                }
             }
-        }
-    ).exec();
+        ).exec();
 
-    //path del directorio a eliminar
-    let path_directorio = '';
-    dir.directorio_padre === "/" ? path_directorio = `${dir.directorio_padre}${dir.nombre}` : path_directorio = `${dir.directorio_padre}/${dir.nombre}`
+        let aux_nuevo_directorio_padre = `${nuevo_directorio_padre}/${directorio_padre_a_mover.nombre}`
 
-    //Eliminar de padres
-    const eliminarPadre = await padres.deleteOne({
-        path: path_directorio,
-        propietario: propietario
-    }).exec();
+        //mover hijos
+        await moverHijosAPapelera(path_padre_antiguo,directorio_padre_a_mover.propietario,aux_nuevo_directorio_padre);
 
-    const eliminarHijosPadre = await padres.deleteMany({
-        path: { $regex: new RegExp(`^${path_directorio}/`) },
-        propietario: propietario
-    }).exec();
-
-    await moverHijosAPapelera(path_directorio, propietario);
-
-    if (eliminarRoot.matchedCount == 1) {
         res.json({ update: true });
-    } else {
+        
+
+    } catch (error) {
         res.json({ update: false });
+        console.error(error)
     }
+
+
 
 }
 
-async function moverHijosAPapelera(path_directorio, propietario) {
+async function moverHijosAPapelera(path, propietario, nuevo_directorio) {
+
+    const path_antiguo = path.replace(/\/\//g, '/');
+                             
+    const nuevo_directorio_padre = nuevo_directorio.replace(/\/\//g, '/');
+
+    //console.log("Mover de",path_antiguo, "a", nuevo_directorio_padre)
 
     const directorios = await Directorios.find({
-        directorio_padre: path_directorio,
+        directorio_padre: path_antiguo,
         propietario: propietario
     });
 
     const archivos = await Archivos.find({
-        directorio_padre: path_directorio,
+        directorio_padre: path_antiguo,
         propietario: propietario
     });
-
 
     //si tenia hijos, renombrar path del archivo y carpetas, primero archivos
     if (directorios.length > 0 || archivos.length > 0) {
@@ -154,11 +176,11 @@ async function moverHijosAPapelera(path_directorio, propietario) {
 
             await Archivos.updateMany(
                 {
-                    directorio_padre: path_directorio,
+                    directorio_padre: path_antiguo,
                     propietario: propietario
                 },
                 {
-                    $set: { directorio_padre: "papelera" + path_directorio }
+                    $set: { directorio_padre: `${nuevo_directorio_padre}` }
                 }
             )
 
@@ -171,17 +193,18 @@ async function moverHijosAPapelera(path_directorio, propietario) {
 
             await Directorios.updateMany(
                 {
-                    directorio_padre: path_directorio,
+                    directorio_padre: path_antiguo,
                     propietario: propietario
                 },
                 {
-                    $set: { directorio_padre: "papelera" + path_directorio }
+                    $set: { directorio_padre: `${nuevo_directorio_padre}`}
                 }).exec();
 
-            let path_directorioAux = '';
-            path_directorio = path_directorioAux = `${hijo.directorio_padre}/${hijo.nombre}`
 
-            moverHijosAPapelera(path_directorioAux, propietario);
+            let path_antiguo_aux = `${hijo.directorio_padre}/${hijo.nombre}`
+            let nuevo_directorio_padre_aux = `${nuevo_directorio_padre}/${hijo.nombre}`
+
+            await  moverHijosDirectorio(path_antiguo_aux, propietario, nuevo_directorio_padre_aux);
 
         });
 
@@ -366,11 +389,6 @@ async function copiarHijos(path_directorio, propietario, nuevoNombre) {
 }
 
 
-
-
-
-
-
 const moverDirectorio = async (req, res) => {
 
     try {
@@ -515,6 +533,9 @@ async function moverHijosDirectorio(path, propietario, nuevo_directorio) {
     }
 
 }
+
+
+
 
 
 
