@@ -97,6 +97,15 @@ export class CloudService {
      
   }
 
+  public listarDirectoriosMoverDirectorio(propietario:any,directorio:any):Observable<any>{
+
+    const params = new HttpParams().set('propietario',propietario)
+    .set('directorio',directorio);
+    
+    return this.http.get<any>(`${this.baseURL}/directorios-usuario-excluyente`, {params} );
+     
+  }
+
   public moverArchivo(id:any,directorio_padre:any):Observable<any>{
     const request = {
       id: id,

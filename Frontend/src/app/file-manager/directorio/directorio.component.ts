@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Directorio } from 'src/app/Models/Directorio';
 import { CloudService } from '../service/cloud.service';
+import { switchMap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -21,15 +22,22 @@ export class DirectorioComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cloudService.detalleDirectorio(this.id_directorio)
+      .pipe(
+        switchMap((data) => {
+          this.directorio = data;
+          return this.cloudService.listarDirectoriosMoverDirectorio(this.propietario, `${this.directorio.directorio_padre}${this.directorio.nombre}`);
+        })
+      )
+      .subscribe((data) => {
+        //No mover ni a si mismo ni a sus hijos
+        let path_directorio = '';
+        this.directorio.directorio_padre === "/" ? path_directorio = `${this.directorio.directorio_padre}${this.directorio.nombre}` : path_directorio = `${this.directorio.directorio_padre}/${this.directorio.nombre}`
 
-    this.cloudService.detalleDirectorio(this.id_directorio).subscribe((data) => {
-      this.directorio = data;
-    });
-
-    this.cloudService.listarDirectorios(this.propietario).subscribe((data) => {
-      this.directorios = data.directorios;
-    })
-
+        const directoriosMostrar = data.directorios.filter((directorio: string) => directorio !== path_directorio);
+        
+        this.directorios = directoriosMostrar;
+      });
   }
 
   public eliminarDirectorio() {
