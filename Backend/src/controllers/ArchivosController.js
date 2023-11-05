@@ -205,6 +205,31 @@ async function crearNombreUnico(archivo) {
     return nombreExiste;
 }
 
+async function crearNombreUnicoCompartido(archivo) {
+    let nombreBase = archivo.nombre;
+    let contador = 0;
+    let nombreExiste = '';
+
+    while (true) {
+        const buscar = await Archivos.findOne({
+            nombre: `${nombreBase}${nombreExiste}`,
+            directorio_padre: "compartido",
+            propietario: archivo.propietario
+        }).exec();
+
+        if (!buscar) {
+            // El nombre no existe en la base de datos, es único.
+            break;
+        }
+
+        // Agregar un sufijo al nombre y seguir buscando.
+        contador++;
+        nombreExiste = `_compartido_${contador}`;
+    }
+
+    return nombreExiste;
+}
+
 const copiarArchivo = async (req, res) => {
 
     const id = req.body.id;
@@ -272,6 +297,8 @@ const compartirArchivo = async (req, res) => {
         _id: id_archivo
     }).exec();
 
+    const nombreUnico = await crearNombreUnicoCompartido(archivo);
+
     const fechaActual = new Date();
     const fechaFormateada = fechaActual.toLocaleDateString('es-ES');
     const horaFormateada = fechaActual.toLocaleTimeString('it-IT',{ timeZone: 'America/Guatemala' });
@@ -280,7 +307,7 @@ const compartirArchivo = async (req, res) => {
         try {
             const usuariosPromises = usuarios.map(async (usuario) => {
                 const nuevoArchivo = new Archivos({
-                    nombre: archivo.nombre,
+                    nombre: `${archivo.nombre}${nombreUnico}`,
                     extension: archivo.extension,
                     contenido: archivo.contenido,
                     fecha_creacion: archivo.fecha_creacion,
