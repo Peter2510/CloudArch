@@ -116,18 +116,15 @@ const eliminarArchivo = async (req, res) => {
     const { id } = req.body;
 
     try {
-    
+
         const archivo = await Archivos.findOne({
             _id: Object(id)
         });
 
-        
-    
         const nombreUnico = await crearNombreUnicoEliminar(archivo);
-        
+
         const nuevoNombre = `${archivo.nombre}${nombreUnico}`
-        
-    
+
         const eliminar = await Archivos.updateOne({
             _id: Object(id)
         },
@@ -138,18 +135,17 @@ const eliminarArchivo = async (req, res) => {
                 }
             }
         ).exec();
-    
-    
+
         if (eliminar.matchedCount == 1) {
             res.json({ update: true });
         } else {
             res.json({ update: false });
-        }        
+        }
+
     } catch (error) {
-        
+
         res.json({ update: false });
     }
-
 
 }
 
@@ -346,7 +342,7 @@ const compartirArchivo = async (req, res) => {
 
     const fechaActual = new Date();
     const fechaFormateada = fechaActual.toLocaleDateString('es-ES');
-    const horaFormateada = fechaActual.toLocaleTimeString('it-IT',{ timeZone: 'America/Guatemala' });
+    const horaFormateada = fechaActual.toLocaleTimeString('it-IT', { timeZone: 'America/Guatemala' });
 
     if (archivo) {
         try {
@@ -359,8 +355,8 @@ const compartirArchivo = async (req, res) => {
                     directorio_padre: 'compartido',
                     propietario: archivo.propietario,
                     usuario_compartido: usuario,
-                    fecha_compartido:fechaFormateada,
-                    hora_compartido:horaFormateada
+                    fecha_compartido: fechaFormateada,
+                    hora_compartido: horaFormateada
                 });
 
                 return nuevoArchivo.save();
@@ -382,10 +378,10 @@ const listarArchivosCompartidoInicio = async (req, res) => {
 
     const directorio = req.query.directorio_padre;
     const propietario = req.query.propietario;
-   
+
     const compartido = await Archivos.find({
         directorio_padre: directorio,
-        usuario_compartido:propietario
+        usuario_compartido: propietario
     }).exec();
 
     res.json(compartido);

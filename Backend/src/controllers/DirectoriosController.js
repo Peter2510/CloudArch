@@ -119,7 +119,12 @@ const eliminarDirectorio = async (req, res) => {
         }).exec();
 
         //Agregar nuevo path a padres
+        
+        const nuevo_nombre = await crearNombreUnicoEliminar(directorio_padre_a_mover);
 
+        console.log(nuevo_nombre);
+        console.log(directorio_padre_a_mover)
+        
 
         //mover carpeta root
         const moverRoot = await Directorios.updateOne(
@@ -129,12 +134,19 @@ const eliminarDirectorio = async (req, res) => {
             {
                 $set:
                 {
-                    directorio_padre: nuevo_directorio_padre
+                    directorio_padre: nuevo_directorio_padre,
+                    nombre: `${nuevo_nombre}`
                 }
             }
         ).exec();
 
-        let aux_nuevo_directorio_padre = `${nuevo_directorio_padre}/${directorio_padre_a_mover.nombre}`
+        const directorio_actualizado = await Directorios.findOne({
+            _id: id
+        }).exec();
+
+
+        let aux_nuevo_directorio_padre = `${nuevo_directorio_padre}/${directorio_actualizado.nombre}`
+        
 
         //mover hijos
         await moverHijosAPapelera(path_padre_antiguo,directorio_padre_a_mover.propietario,aux_nuevo_directorio_padre);
@@ -266,6 +278,28 @@ async function crearNombreUnico(dir) {
     }
 
     return nombreExiste;
+}
+
+async function crearNombreUnicoEliminar(dir) {
+    let nombreBase = dir.nombre;
+    let contador = 1;
+
+    while (true) {
+        let nombreExiste = `${nombreBase}_${dir.propietario}_${contador}`;
+
+        const buscar = await Directorios.findOne({
+            nombre: nombreExiste,
+            directorio_padre: "papelera"
+        }).exec();
+
+        if (!buscar) {
+            // El nombre no existe en la base de datos, es único.
+            return nombreExiste;
+        }
+
+        // Incrementar el contador y seguir buscando.
+        contador++;
+    }
 }
 
 const copiarDirectorio = async (req, res) => {
