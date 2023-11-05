@@ -115,22 +115,41 @@ const eliminarArchivo = async (req, res) => {
 
     const { id } = req.body;
 
-    const eliminar = await Archivos.updateOne({
-        _id: Object(id)
-    },
-        {
-            $set: {
-                directorio_padre: "papelera"
+    try {
+    
+        const archivo = await Archivos.findOne({
+            _id: Object(id)
+        });
+
+        
+    
+        const nombreUnico = await crearNombreUnicoEliminar(archivo);
+        
+        const nuevoNombre = `${archivo.nombre}${nombreUnico}`
+        
+    
+        const eliminar = await Archivos.updateOne({
+            _id: Object(id)
+        },
+            {
+                $set: {
+                    directorio_padre: "papelera",
+                    nombre: nuevoNombre
+                }
             }
-        }
-    ).exec();
-
-
-    if (eliminar.matchedCount == 1) {
-        res.json({ update: true });
-    } else {
+        ).exec();
+    
+    
+        if (eliminar.matchedCount == 1) {
+            res.json({ update: true });
+        } else {
+            res.json({ update: false });
+        }        
+    } catch (error) {
+        
         res.json({ update: false });
     }
+
 
 }
 
@@ -214,7 +233,8 @@ async function crearNombreUnicoCompartido(archivo) {
         const buscar = await Archivos.findOne({
             nombre: `${nombreBase}${nombreExiste}`,
             directorio_padre: "compartido",
-            propietario: archivo.propietario
+            propietario: archivo.propietario,
+            extension: archivo.extension
         }).exec();
 
         if (!buscar) {
@@ -225,6 +245,31 @@ async function crearNombreUnicoCompartido(archivo) {
         // Agregar un sufijo al nombre y seguir buscando.
         contador++;
         nombreExiste = `_compartido_${contador}`;
+    }
+
+    return nombreExiste;
+}
+
+async function crearNombreUnicoEliminar(archivo) {
+    let nombreBase = archivo.nombre;
+    let contador = 0;
+    let nombreExiste = '';
+
+    while (true) {
+        const buscar = await Archivos.findOne({
+            nombre: `${nombreBase}${nombreExiste}`,
+            directorio_padre: "papelera",
+            extension: archivo.extension
+        }).exec();
+
+        if (!buscar) {
+            // El nombre no existe en la base de datos, es único.
+            break;
+        }
+
+        // Agregar un sufijo al nombre y seguir buscando.
+        contador++;
+        nombreExiste = `_${archivo.propietario}_${contador}`;
     }
 
     return nombreExiste;
