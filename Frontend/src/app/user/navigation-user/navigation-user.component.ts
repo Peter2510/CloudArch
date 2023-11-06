@@ -32,7 +32,10 @@ export class NavigationUserComponent {
       this.loginService.logOut();
       window.location.reload();
     }
-
+    
+    public recargar(){
+      window.location.reload();
+    }
     
 
 }

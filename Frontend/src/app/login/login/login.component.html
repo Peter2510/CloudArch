@@ -1,10 +1,9 @@
-<div class="container">
+<div class="container ">
     <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto" >
         <div class="card border-0 shadow rounded-3 my-5">
-          <div class="card-body p-4 p-sm-5">
-            <h1 class="card-title text-center mb-5 fw-bold">Ingreso a CloudArch</h1>
-  
+          <div class="card-body p-4 p-sm-5" style="background-color: #485375;" >
+            <img src="assets/img/cloudArch-1.png" class="img">
             <form (ngSubmit)="login()">
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="Código" [(ngModel)]="loginData.usuario" [ngModelOptions]="{standalone: true}">
@@ -24,7 +23,7 @@
                 </div>
               </div>
               <div class="d-grid">
-                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Ingresar</button>
+                <button class="btn btn-outline-light btn-login text-uppercase fw-bold" type="submit">Ingresar</button>
               </div>
             </form>
           </div>
@@ -32,3 +31,6 @@
       </div>
     </div>
   </div>
+
+
+  
