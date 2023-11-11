@@ -1,6 +1,6 @@
 # CloudArch
 
-CloudArch es un sistema de gestión de archivos en la nube. La nube es utilizada únicamente para enviar información entre los propios empleados de la empresa.
+CloudArch es un sistema de gestión de archivos en la nube. La nube es utilizada para enviar información entre los propios empleados de la empresa.
 
 # Tecnologías utilizadas
 
@@ -12,10 +12,10 @@ CloudArch es un sistema de gestión de archivos en la nube. La nube es utilizada
 
 # Ejecutar
 
-## Modo desarrolador
+## Modo desarrollador
 
 ### Base de datos
-Ejecutar  en MongoDB el script que se encuentra en el directorio 
+Ejecutar  en MongoDB Shell el script que se encuentra en el directorio 
 >  **/Backend/src/database**
 
 ### Backend
@@ -31,12 +31,11 @@ En el directorio Frontend ejecutar el siguiente comando:
 ## Dockerizado
 
 ### Comando para ejecutar
-En el directorio raiz ejecutar el siguiente comando:
+En el directorio raíz ejecutar el siguiente comando:
 
 > **docker compose up --build**
 
 ### Comando para detener
-En el directorio raiz ejecutar el siguiente comando:
+En el directorio raíz ejecutar el siguiente comando:
 > **docker compose down**
-
 
