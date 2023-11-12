@@ -123,7 +123,7 @@ const eliminarArchivo = async (req, res) => {
 
         const nombreUnico = await crearNombreUnicoEliminar(archivo);
 
-        const nuevoNombre = `${archivo.nombre}${nombreUnico}`
+        const nuevoNombre = `${nombreUnico}`
 
         const eliminar = await Archivos.updateOne({
             _id: Object(id)
@@ -248,7 +248,7 @@ async function crearNombreUnicoCompartido(archivo) {
 
 async function crearNombreUnicoEliminar(archivo) {
     let nombreBase = archivo.nombre;
-    let contador = 0;
+    let contador = 1;
     let nombreExiste = '';
 
     while (true) {
@@ -256,22 +256,21 @@ async function crearNombreUnicoEliminar(archivo) {
         let nombreExiste = `${nombreBase}_${archivo.propietario}_${contador}`;
 
         const buscar = await Archivos.findOne({
-            nombre: `${nombreBase}${nombreExiste}`,
+            nombre: `${nombreExiste}`,
             directorio_padre: "papelera",
             extension: archivo.extension
         }).exec();
 
         if (!buscar) {
             // El nombre no existe en la base de datos, es único.
-            break;
+            return nombreExiste;
         }
 
         // Agregar un sufijo al nombre y seguir buscando.
         contador++;
-        nombreExiste = `_${archivo.propietario}_${contador}`;
     }
 
-    return nombreExiste;
+    
 }
 
 const copiarArchivo = async (req, res) => {
