@@ -252,6 +252,9 @@ async function crearNombreUnicoEliminar(archivo) {
     let nombreExiste = '';
 
     while (true) {
+
+        let nombreExiste = `${nombreBase}_${archivo.propietario}_${contador}`;
+
         const buscar = await Archivos.findOne({
             nombre: `${nombreBase}${nombreExiste}`,
             directorio_padre: "papelera",
@@ -338,7 +341,7 @@ const compartirArchivo = async (req, res) => {
         _id: id_archivo
     }).exec();
 
-    const nombreUnico = await crearNombreUnicoCompartido(archivo);
+    /*const nombreUnico = await crearNombreUnicoCompartido(archivo);*/
 
     const fechaActual = new Date();
     const fechaFormateada = fechaActual.toLocaleDateString('es-ES');
@@ -348,7 +351,7 @@ const compartirArchivo = async (req, res) => {
         try {
             const usuariosPromises = usuarios.map(async (usuario) => {
                 const nuevoArchivo = new Archivos({
-                    nombre: `${archivo.nombre}${nombreUnico}`,
+                    nombre: `${archivo.nombre}_${fechaFormateada}_${horaFormateada}`,
                     extension: archivo.extension,
                     contenido: archivo.contenido,
                     fecha_creacion: archivo.fecha_creacion,
